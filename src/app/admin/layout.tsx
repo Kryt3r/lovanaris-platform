@@ -10,7 +10,7 @@ export default async function LovanarisAdminLayout({
 
   // Wenn keine Lovanaris-Session existiert -> Redirect zum Lovanaris-Login
   if (!session) {
-    redirect("/lovanaris/login?callbackUrl=/lovanaris/admin");
+    redirect("/login?callbackUrl=/admin");
   }
 
   return (
