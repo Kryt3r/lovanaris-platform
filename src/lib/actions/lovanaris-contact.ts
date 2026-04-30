@@ -94,3 +94,38 @@ export async function submitContactAction(data: {
     return { success: false, error: error.message || "Fehler beim Senden." };
   }
 }
+
+// --- ADMIN ACTIONS ---
+
+export async function adminGetAllContactRequestsAction() {
+  try {
+    const { getLovanarisSession } = await import("./lovanaris-auth");
+    const session = await getLovanarisSession();
+    if (!session) throw new Error("Nicht autorisiert.");
+
+    const requests = await db
+      .select()
+      .from(lovanarisContactRequests)
+      .orderBy(lovanarisContactRequests.createdAt);
+
+    return { success: true, data: requests };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function adminUpdateContactStatusAction(id: number, status: string) {
+  try {
+    const { getLovanarisSession } = await import("./lovanaris-auth");
+    const session = await getLovanarisSession();
+    if (!session) throw new Error("Nicht autorisiert.");
+
+    await db.update(lovanarisContactRequests)
+      .set({ status })
+      .where(eq(lovanarisContactRequests.id, id));
+
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, error: error.message };
+  }
+}

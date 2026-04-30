@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle, Copy, AlertCircle, Info, ShieldAlert, Scale, ArrowRight, EyeOff, ShieldCheck, Phone, ListChecks, ChevronDown } from "lucide-react";
+import { Send, CheckCircle, Copy, AlertCircle, Info, ShieldAlert, Scale, ArrowRight, EyeOff, ShieldCheck, Phone, ListChecks, ChevronDown, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { submitStoryAction } from "@/lib/actions/lovanaris";
 
@@ -24,6 +24,7 @@ export default function LovanarisSchreibenPage() {
   const [story, setStory] = useState("");
   const [triggerCategory, setTriggerCategory] = useState("");
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
   
   // Security / Anti-Spam
@@ -83,6 +84,7 @@ export default function LovanarisSchreibenPage() {
     }
 
     // Server-side save
+    setLoading(true);
     const result = await submitStoryAction({
       story: story,
       category: triggerCategory
@@ -97,6 +99,7 @@ export default function LovanarisSchreibenPage() {
     } else {
       alert(result.error || "Es gab ein Problem beim Speichern. Bitte versuche es später erneut.");
     }
+    setLoading(false);
   };
 
   const [showCopyToast, setShowCopyToast] = useState(false);
@@ -323,8 +326,9 @@ export default function LovanarisSchreibenPage() {
 
               <div style={{ display: "flex", gap: "1rem" }}>
                 <button type="button" onClick={() => setStep(1)} className="btn-lovanaris btn-lovanaris-outline">Zurück</button>
-                <button type="submit" className="btn-lovanaris btn-lovanaris-primary" style={{ flexGrow: 1 }}>
-                  <ShieldCheck size={20} /> Final & Anonym absenden
+                <button type="submit" disabled={loading} className="btn-lovanaris btn-lovanaris-primary" style={{ flexGrow: 1, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
+                  {loading ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} />}
+                  {loading ? "Wird gesendet..." : "Final & Anonym absenden"}
                 </button>
               </div>
             </form>
