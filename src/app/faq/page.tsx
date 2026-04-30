@@ -108,7 +108,7 @@ export default function LovanarisFaqPage() {
           <p style={{ marginBottom: "2rem" }}>Schreib uns direkt eine E-Mail oder schau dir unser detailliertes Regelwerk an.</p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
             <Link href="/regelwerk" className="btn-lovanaris btn-lovanaris-outline">Regelwerk lesen</Link>
-            <a href="mailto:kontakt@einfach-robin.de" className="btn-lovanaris btn-lovanaris-primary">Kontakt aufnehmen</a>
+            <a href="mailto:contact@lovanaris.de" className="btn-lovanaris btn-lovanaris-primary">Kontakt aufnehmen</a>
           </div>
         </div>
       </div>

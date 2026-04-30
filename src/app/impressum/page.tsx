@@ -36,7 +36,7 @@ export default function LovanarisImpressumPage() {
             <p>48268 Greven</p>
             <p style={{ marginTop: "1.5rem" }}>
               <Mail size={16} style={{ display: "inline", marginRight: "8px" }} />
-              kontakt@einfach-robin.de
+              E-Mail: contact@lovanaris.de<br />
             </p>
           </div>
         </motion.section>

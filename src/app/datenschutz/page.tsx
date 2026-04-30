@@ -72,7 +72,7 @@ export default function LovanarisDatenschutzPage() {
             <Mail size={20} color="var(--lovanaris-primary)" />
             <h3 style={{ color: "white", margin: 0 }}>Kontakt für Datenschutzfragen</h3>
           </div>
-          <p>Bei Fragen zur Datenverarbeitung kannst du dich an <strong>kontakt@einfach-robin.de</strong> wenden. Bitte beachte, dass wir ohne deinen Code keine Auskunft über spezifische Einsendungen geben können.</p>
+          <p>Bei Fragen zur Datenverarbeitung kannst du dich an <strong>contact@lovanaris.de</strong> wenden. Bitte beachte, dass wir ohne deinen Code keine Auskunft über spezifische Einsendungen geben können.</p>
         </div>
       </div>
     </div>

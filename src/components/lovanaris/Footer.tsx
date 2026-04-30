@@ -41,7 +41,7 @@ export function LovanarisFooter() {
         <div style={{ flex: "1 1 150px" }}>
           <h4 style={{ marginBottom: "1.25rem", fontSize: "1rem" }}>Kontakt</h4>
           <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "0.75rem", fontSize: "0.9rem" }}>
-            <li><a href="mailto:kontakt@einfach-robin.de" style={{ color: "var(--lovanaris-text-muted)", textDecoration: "none" }}>E-Mail schreiben</a></li>
+            <li><a href="mailto:contact@lovanaris.de" style={{ color: "var(--lovanaris-text-muted)", textDecoration: "none" }}>E-Mail schreiben</a></li>
             <li><Link href="/impressum" style={{ color: "var(--lovanaris-text-muted)", textDecoration: "none" }}>Impressum</Link></li>
           </ul>
         </div>
