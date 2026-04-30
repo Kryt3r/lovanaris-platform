@@ -51,7 +51,7 @@ export function LovanarisFooter() {
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           Made with <Heart size={14} color="#ef4444" fill="#ef4444" /> for a safer community.
         </div>
-        &copy; {new Date().getFullYear()} Lovanaris | Ein Projekt von <Link href="https://www.einfachrobin.de" style={{ color: "inherit", textDecoration: "underline" }}>Einfach Robin</Link>
+        &copy; {new Date().getFullYear()} Lovanaris | Ein Projekt von <Link href="https://www.einfachrobin.de" style={{ color: "inherit", textDecoration: "underline" }}>Robin Lester</Link>
       </div>
     </footer>
   );
