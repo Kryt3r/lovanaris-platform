@@ -58,6 +58,18 @@ export default function LovanarisAdminDashboard() {
   const [showReadingModal, setShowReadingModal] = useState(false);
   const router = useRouter();
 
+  // Prevent background scroll when modal is open
+  useEffect(() => {
+    if (showReadingModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showReadingModal]);
+
   useEffect(() => {
     async function init() {
       const sess = await getLovanarisSession();
@@ -605,7 +617,10 @@ export default function LovanarisAdminDashboard() {
                 </button>
               </div>
 
-              <div style={{ flex: 1, overflowY: "auto", padding: "4rem", lineHeight: "1.8", fontSize: "1.2rem", color: "#d1d5db", whiteSpace: "pre-wrap" }}>
+              <div 
+                data-lenis-prevent
+                style={{ flex: 1, overflowY: "auto", padding: "4rem", lineHeight: "1.8", fontSize: "1.2rem", color: "#d1d5db", whiteSpace: "pre-wrap" }}
+              >
                 {selectedItem._type === 'submission' ? selectedItem.story : selectedItem.message}
               </div>
 
