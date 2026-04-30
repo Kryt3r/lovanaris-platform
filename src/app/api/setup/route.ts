@@ -63,6 +63,20 @@ export async function GET(request: NextRequest) {
       )
     `);
 
+    await db.execute(sql`
+      CREATE TABLE IF NOT EXISTS lovanaris_contact_requests (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        type VARCHAR(50) NOT NULL,
+        email VARCHAR(255),
+        story_code VARCHAR(20),
+        security_token VARCHAR(100),
+        validation_note TEXT,
+        message TEXT NOT NULL,
+        status VARCHAR(50) NOT NULL DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
     // 2. Spalten-Migrationen
     const migrations = [
       "ALTER TABLE lovanaris_submissions ADD COLUMN user_reply TEXT AFTER admin_message",
@@ -70,7 +84,8 @@ export async function GET(request: NextRequest) {
       "ALTER TABLE lovanaris_submissions ADD COLUMN locked_at TIMESTAMP NULL AFTER locked_by",
       "ALTER TABLE lovanaris_submissions ADD COLUMN processed_by INT AFTER locked_at",
       "ALTER TABLE lovanaris_admins ADD COLUMN role VARCHAR(20) DEFAULT 'moderator' NOT NULL AFTER name",
-      "ALTER TABLE lovanaris_messages ADD COLUMN admin_id INT AFTER submission_id"
+      "ALTER TABLE lovanaris_messages ADD COLUMN admin_id INT AFTER submission_id",
+      "ALTER TABLE lovanaris_submissions ADD COLUMN security_token VARCHAR(100) AFTER processed_by"
     ];
 
     for (const migration of migrations) {

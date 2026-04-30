@@ -20,6 +20,7 @@ export default function LovanarisSchreibenPage() {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [code, setCode] = useState("");
+  const [securityToken, setSecurityToken] = useState("");
   const [story, setStory] = useState("");
   const [triggerCategory, setTriggerCategory] = useState("");
   const [isSelectOpen, setIsSelectOpen] = useState(false);
@@ -89,6 +90,7 @@ export default function LovanarisSchreibenPage() {
 
     if (result.success && result.code) {
       setCode(result.code);
+      if (result.securityToken) setSecurityToken(result.securityToken);
       setSubmitted(true);
       setStep(3);
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -378,30 +380,69 @@ export default function LovanarisSchreibenPage() {
                 marginBottom: "3rem"
               }}
             >
-              <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--lovanaris-primary)", fontWeight: "700", marginBottom: "1rem" }}>
-                Dein Anonymer Zugangs-Code
+              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
+                <div>
+                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--lovanaris-primary)", fontWeight: "700", marginBottom: "1rem" }}>
+                    Öffentlicher Zugangs-Code
+                  </div>
+                  <div 
+                    style={{ 
+                      fontSize: "3.5rem", 
+                      fontFamily: "monospace", 
+                      letterSpacing: "0.3em", 
+                      color: "white",
+                      textShadow: "0 0 30px rgba(59, 130, 246, 0.3)",
+                    }}
+                  >
+                    {code}
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#666", marginTop: "10px" }}>Wird benötigt, um den Status deiner Geschichte zu prüfen.</p>
+                </div>
+
+                <div style={{ padding: "2rem", background: "rgba(239, 68, 68, 0.05)", borderRadius: "16px", border: "1px solid rgba(239, 68, 68, 0.1)" }}>
+                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#ef4444", fontWeight: "700", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                    <ShieldCheck size={16} /> Geheimer Lösch-Key
+                  </div>
+                  <div 
+                    style={{ 
+                      fontSize: "1.5rem", 
+                      fontFamily: "monospace", 
+                      letterSpacing: "0.2em", 
+                      color: "white",
+                      background: "rgba(0,0,0,0.3)",
+                      padding: "1rem",
+                      borderRadius: "8px",
+                      border: "1px solid #333"
+                    }}
+                  >
+                    {securityToken}
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: "10px" }}><strong>Diesen Key niemals teilen!</strong> Nur hiermit kannst du später eine Löschung beantragen.</p>
+                </div>
               </div>
-              <div 
-                className="lovanaris-code-display" 
-                style={{ 
-                  fontSize: "4.5rem", 
-                  fontFamily: "monospace", 
-                  letterSpacing: "0.4em", 
-                  textIndent: "0.4em",
-                  color: "white",
-                  textShadow: "0 0 30px rgba(59, 130, 246, 0.3)",
-                  margin: "1rem 0"
-                }}
-              >
-                {code}
+
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2rem" }}>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(code);
+                    setShowCopyToast(true);
+                    setTimeout(() => setShowCopyToast(false), 3000);
+                  }} 
+                  className="btn-lovanaris btn-lovanaris-outline" 
+                >
+                  <Copy size={18} /> Code kopieren
+                </button>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(securityToken);
+                    setShowCopyToast(true);
+                    setTimeout(() => setShowCopyToast(false), 3000);
+                  }} 
+                  className="btn-lovanaris btn-lovanaris-outline"
+                >
+                  <ShieldCheck size={18} /> Key kopieren
+                </button>
               </div>
-              <button 
-                onClick={copyCode} 
-                className="btn-lovanaris btn-lovanaris-outline" 
-                style={{ marginTop: "1rem", background: "rgba(255,255,255,0.05)" }}
-              >
-                <Copy size={18} /> Code kopieren
-              </button>
             </motion.div>
 
             <motion.div 

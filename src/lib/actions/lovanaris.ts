@@ -127,10 +127,21 @@ export async function submitStoryAction(data: {
     if (!data.story || data.story.length < 100) throw new Error("Geschichte zu kurz.");
     if (!data.category) throw new Error("Kategorie fehlt.");
 
+    const generateSecurityToken = () => {
+      const chars = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let token = "";
+      for (let i = 0; i < 12; i++) {
+        token += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return token;
+    };
+
     const uniqueCode = await generateUniqueCode();
+    const securityToken = generateSecurityToken();
 
     await db.insert(lovanarisSubmissions).values({
       code: uniqueCode,
+      securityToken: securityToken,
       story: data.story,
       category: data.category,
       status: "pending",
@@ -138,7 +149,7 @@ export async function submitStoryAction(data: {
 
     await updateRateLimit("submission", true, 2, 1440);
 
-    return { success: true, code: uniqueCode };
+    return { success: true, code: uniqueCode, securityToken: securityToken };
   } catch (error: any) {
     console.error("Lovanaris Submission Error:", error);
     return { success: false, error: error.message || "Fehler beim Speichern." };

@@ -137,8 +137,22 @@ export const lovanarisSubmissions = mysqlTable("lovanaris_submissions", {
   lockedBy: int("locked_by"), // ID des Admins, der gerade bearbeitet
   lockedAt: timestamp("locked_at"),
   processedBy: int("processed_by"), // Letzter Bearbeiter
+  securityToken: varchar("security_token", { length: 100 }), // Für Löschanträge
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow().onUpdateNow(),
+});
+
+// --- LOVANARIS CONTACT REQUESTS ---
+export const lovanarisContactRequests = mysqlTable("lovanaris_contact_requests", {
+  id: int("id").autoincrement().primaryKey(),
+  type: varchar("type", { length: 50 }).notNull(), // 'deletion', 'general'
+  email: varchar("email", { length: 255 }), // Nur bei 'general'
+  storyCode: varchar("story_code", { length: 20 }), // Nur bei 'deletion'
+  securityToken: varchar("security_token", { length: 100 }), // Nur bei 'deletion'
+  validationNote: text("validation_note"), // Für Altfälle oder zusätzliche Infos
+  message: text("message").notNull(),
+  status: varchar("status", { length: 50 }).default("pending").notNull(), // pending, processed, archived
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // --- RELATIONS ---
@@ -215,5 +229,3 @@ export const lovanarisMessages = mysqlTable("lovanaris_messages", {
   content: text("content").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
-
-
