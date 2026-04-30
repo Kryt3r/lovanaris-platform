@@ -6,7 +6,6 @@ import { LovanarisNavbar } from "@/components/lovanaris/Navbar";
 import { LovanarisBackground } from "@/components/lovanaris/Background";
 import { LovanarisFooter } from "@/components/lovanaris/Footer";
 import { BackgroundMesh } from "@/components/BackgroundMesh";
-import { Meteors } from "@/components/Meteors";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,12 +25,6 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen bg-[#050505] text-white selection:bg-white/20`}>
         <SmoothScroll>
           <div className="lovanaris-wrapper flex flex-col min-h-screen">
-            <div 
-              className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
-              style={{ transform: 'translateZ(0)' }}
-            >
-              <Meteors number={25} />
-            </div>
             <div style={{ transform: 'translateZ(0)' }}>
               <BackgroundMesh />
               <LovanarisBackground />
