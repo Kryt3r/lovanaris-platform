@@ -5,6 +5,9 @@ import "./lovanaris.css";
 import { LovanarisNavbar } from "@/components/lovanaris/Navbar";
 import { LovanarisBackground } from "@/components/lovanaris/Background";
 import { LovanarisFooter } from "@/components/lovanaris/Footer";
+import { BackgroundMesh } from "@/components/BackgroundMesh";
+import { Meteors } from "@/components/Meteors";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,14 +24,30 @@ export default function RootLayout({
   return (
     <html lang="de">
       <body className={`${inter.className} min-h-screen bg-[#050505] text-white selection:bg-white/20`}>
-        <div className="lovanaris-wrapper">
-          <LovanarisBackground />
-          <LovanarisNavbar />
-          <main className="center-wrapper" style={{ position: "relative", zIndex: 20, paddingTop: "48px" }}>
-            {children}
-          </main>
-          <LovanarisFooter />
-        </div>
+        <SmoothScroll>
+          <div className="lovanaris-wrapper flex flex-col min-h-screen">
+            <div 
+              className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
+              style={{ transform: 'translateZ(0)' }}
+            >
+              <Meteors number={25} />
+            </div>
+            <div style={{ transform: 'translateZ(0)' }}>
+              <BackgroundMesh />
+              <LovanarisBackground />
+            </div>
+            
+            <LovanarisNavbar />
+            
+            <main className="relative flex-grow pb-20" style={{ paddingTop: "48px", zIndex: 20 }}>
+              <div className="center-wrapper">
+                {children}
+              </div>
+            </main>
+            
+            <LovanarisFooter />
+          </div>
+        </SmoothScroll>
       </body>
     </html>
   );
