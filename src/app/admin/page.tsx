@@ -304,13 +304,16 @@ export default function LovanarisAdminDashboard() {
         {/* View Content */}
         <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
           {/* List Section */}
-          <div style={{ 
-            width: "360px", 
-            borderRight: "1px solid #1a1a1a", 
-            overflowY: "auto", 
-            padding: "1.5rem",
-            background: "#090909"
-          }}>
+          <div 
+            data-lenis-prevent
+            style={{ 
+              width: "360px", 
+              borderRight: "1px solid #1a1a1a", 
+              overflowY: "auto", 
+              padding: "1.5rem",
+              background: "#090909"
+            }}
+          >
             <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1.25rem", letterSpacing: "0.1em" }}>
               {activeTab === "contacts" ? "Support Anfragen" : "Eingereichte Geschichten"}
             </div>
@@ -351,7 +354,10 @@ export default function LovanarisAdminDashboard() {
           </div>
 
           {/* Detail Section */}
-          <div style={{ flex: 1, background: "#080808", overflowY: "auto", padding: "2.5rem" }}>
+          <div 
+            data-lenis-prevent
+            style={{ flex: 1, background: "#080808", overflowY: "auto", padding: "2.5rem" }}
+          >
             <AnimatePresence mode="wait">
               {selectedItem ? (
                 <motion.div 
