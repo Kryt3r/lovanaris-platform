@@ -167,8 +167,10 @@ export default function LovanarisAdminDashboard() {
         display: "flex", 
         flexDirection: "column",
         flexShrink: 0,
-        zIndex: 100
+        zIndex: 100,
+        height: "100vh"
       }}>
+        {/* LOGO SECTION */}
         <div style={{ padding: "2rem", display: "flex", alignItems: "center", gap: "12px" }}>
           <div style={{ 
             width: "40px", 
@@ -183,55 +185,64 @@ export default function LovanarisAdminDashboard() {
             <Shield color="white" size={22} />
           </div>
           <div>
-            <div style={{ fontWeight: "800", fontSize: "1.1rem", letterSpacing: "-0.02em" }}>LOVANARIS</div>
+            <div style={{ fontWeight: "800", fontSize: "1.1rem", letterSpacing: "-0.02em", color: "white" }}>LOVANARIS</div>
             <div style={{ fontSize: "0.7rem", color: "#555", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.1em" }}>Admin Console</div>
           </div>
         </div>
 
-        <nav style={{ padding: "0 1rem", flex: 1 }}>
-          <div style={{ marginBottom: "2rem" }}>
-            <div style={{ fontSize: "0.65rem", color: "#444", fontWeight: "700", textTransform: "uppercase", padding: "0 1rem 0.75rem", letterSpacing: "0.1em" }}>Übersicht</div>
-            <NavButton active={activeTab === "tickets"} onClick={() => { setActiveTab("tickets"); setSelectedItem(null); }} icon={<LayoutDashboard size={18}/>} label="Ticket-Pool" />
-            <NavButton active={activeTab === "my_tickets"} onClick={() => { setActiveTab("my_tickets"); setSelectedItem(null); }} icon={<Briefcase size={18}/>} label="Meine Tickets" count={myTicketsCount} />
-            <NavButton active={activeTab === "contacts"} onClick={() => { setActiveTab("contacts"); setSelectedItem(null); }} icon={<Inbox size={18}/>} label="Kontaktanfragen" count={pendingRequestsCount} />
-          </div>
-
+        {/* NAVIGATION SECTION */}
+        <div style={{ padding: "0 1.25rem", flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+          {/* Section: Übersicht */}
           <div>
-            <div style={{ fontSize: "0.65rem", color: "#444", fontWeight: "700", textTransform: "uppercase", padding: "0 1rem 0.75rem", letterSpacing: "0.1em" }}>System</div>
-            <NavButton active={activeTab === "logs"} onClick={() => setActiveTab("logs")} icon={<History size={18}/>} label="Audit-Logs" />
-            <NavButton active={activeTab === "settings"} onClick={() => setActiveTab("settings")} icon={<Settings size={18}/>} label="Einstellungen" />
+            <div style={{ fontSize: "0.65rem", color: "#444", fontWeight: "800", textTransform: "uppercase", padding: "0 0.75rem 0.75rem", letterSpacing: "0.15em" }}>Übersicht</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <NavButton active={activeTab === "tickets"} onClick={() => { setActiveTab("tickets"); setSelectedItem(null); }} icon={<LayoutDashboard size={18}/>} label="Ticket-Pool" />
+              <NavButton active={activeTab === "my_tickets"} onClick={() => { setActiveTab("my_tickets"); setSelectedItem(null); }} icon={<Briefcase size={18}/>} label="Meine Tickets" count={myTicketsCount} />
+              <NavButton active={activeTab === "contacts"} onClick={() => { setActiveTab("contacts"); setSelectedItem(null); }} icon={<Inbox size={18}/>} label="Kontaktanfragen" count={pendingRequestsCount} />
+            </div>
           </div>
-        </nav>
 
+          {/* Section: System */}
+          <div>
+            <div style={{ fontSize: "0.65rem", color: "#444", fontWeight: "800", textTransform: "uppercase", padding: "0 0.75rem 0.75rem", letterSpacing: "0.15em" }}>System</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+              <NavButton active={activeTab === "logs"} onClick={() => setActiveTab("logs")} icon={<History size={18}/>} label="Audit-Logs" />
+              <NavButton active={activeTab === "settings"} onClick={() => setActiveTab("settings")} icon={<Settings size={18}/>} label="Einstellungen" />
+            </div>
+          </div>
+        </div>
+
+        {/* USER SECTION */}
         <div style={{ padding: "1.5rem", borderTop: "1px solid #1a1a1a", background: "#0a0a0a" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "1.25rem" }}>
-            <div style={{ width: "36px", height: "36px", background: "#222", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <User size={18} color="#888" />
+            <div style={{ width: "40px", height: "40px", background: "#1a1a1a", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid #222" }}>
+              <User size={20} color="#3b82f6" />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: "0.85rem", fontWeight: "600", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.admin.name}</div>
-              <div style={{ fontSize: "0.7rem", color: "#555", textTransform: "capitalize" }}>{session.admin.role.replace('_', ' ')}</div>
+              <div style={{ fontSize: "0.9rem", fontWeight: "700", color: "white", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{session.admin.name}</div>
+              <div style={{ fontSize: "0.75rem", color: "#555", textTransform: "capitalize", fontWeight: "600" }}>{session.admin.role.replace('_', ' ')}</div>
             </div>
           </div>
           <button 
             onClick={() => logoutLovanarisAction().then(() => router.push("/login"))} 
             style={{ 
               width: "100%", 
-              background: "rgba(239, 68, 68, 0.05)", 
-              border: "1px solid rgba(239, 68, 68, 0.1)", 
+              background: "rgba(239, 68, 68, 0.08)", 
+              border: "1px solid rgba(239, 68, 68, 0.15)", 
               color: "#ef4444", 
-              padding: "0.75rem", 
-              borderRadius: "10px", 
+              padding: "0.85rem", 
+              borderRadius: "12px", 
               cursor: "pointer", 
               display: "flex", 
               alignItems: "center", 
               justifyContent: "center", 
-              gap: "8px",
-              fontSize: "0.85rem",
-              fontWeight: "600"
+              gap: "10px",
+              fontSize: "0.9rem",
+              fontWeight: "700",
+              transition: "all 0.2s ease"
             }}
           >
-            <LogOut size={16} /> Abmelden
+            <LogOut size={18} /> Abmelden
           </button>
         </div>
       </aside>
@@ -274,15 +285,16 @@ export default function LovanarisAdminDashboard() {
             style={{ 
               background: "#111", 
               border: "1px solid #222", 
-              color: "#888", 
-              padding: "0.5rem 1rem", 
+              color: "#aaa", 
+              padding: "0.6rem 1.25rem", 
               borderRadius: "10px", 
               cursor: "pointer", 
               display: "flex", 
               alignItems: "center", 
-              gap: "8px",
+              gap: "10px",
               fontSize: "0.85rem",
-              fontWeight: "600"
+              fontWeight: "700",
+              transition: "all 0.2s ease"
             }}
           >
             <RefreshCcw size={16} className={updating ? "animate-spin" : ""} /> Aktualisieren
@@ -296,14 +308,14 @@ export default function LovanarisAdminDashboard() {
             width: "360px", 
             borderRight: "1px solid #1a1a1a", 
             overflowY: "auto", 
-            padding: "1.25rem",
+            padding: "1.5rem",
             background: "#090909"
           }}>
-            <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "0.1em" }}>
+            <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1.25rem", letterSpacing: "0.1em" }}>
               {activeTab === "contacts" ? "Support Anfragen" : "Eingereichte Geschichten"}
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
               {activeTab === "contacts" ? (
                 contactRequests.map(r => (
                   <ItemCard 
@@ -354,20 +366,21 @@ export default function LovanarisAdminDashboard() {
                     <div>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "0.5rem" }}>
                         <span style={{ 
-                          padding: "2px 8px", 
-                          borderRadius: "4px", 
-                          background: selectedItem._type === 'submission' ? "rgba(59, 130, 246, 0.1)" : "rgba(139, 92, 246, 0.1)", 
-                          color: selectedItem._type === 'submission' ? "#3b82f6" : "#8b5cf6", 
+                          padding: "3px 10px", 
+                          borderRadius: "6px", 
+                          background: selectedItem._type === 'submission' ? "rgba(59, 130, 246, 0.15)" : "rgba(139, 92, 246, 0.15)", 
+                          color: selectedItem._type === 'submission' ? "#3b82f6" : "#a78bfa", 
                           fontSize: "0.65rem", 
-                          fontWeight: "800",
-                          textTransform: "uppercase"
+                          fontWeight: "900",
+                          textTransform: "uppercase",
+                          letterSpacing: "0.05em"
                         }}>
                           {selectedItem._type === 'submission' ? 'Submission' : 'Support'}
                         </span>
                         <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#333" }} />
-                        <span style={{ color: "#555", fontSize: "0.75rem", fontWeight: "600" }}>#{selectedItem.code || selectedItem.id}</span>
+                        <span style={{ color: "#666", fontSize: "0.75rem", fontWeight: "700" }}>#{selectedItem.code || selectedItem.id}</span>
                       </div>
-                      <h1 style={{ fontSize: "2.25rem", fontWeight: "800", margin: 0, letterSpacing: "-0.03em" }}>
+                      <h1 style={{ fontSize: "2.5rem", fontWeight: "800", margin: 0, letterSpacing: "-0.03em", color: "white" }}>
                         {selectedItem._type === 'submission' ? selectedItem.category : (selectedItem.type === 'deletion' ? 'Löschungsantrag' : 'Allgemeine Anfrage')}
                       </h1>
                     </div>
@@ -378,17 +391,17 @@ export default function LovanarisAdminDashboard() {
                           {selectedItem.lockedBy === session.admin.id ? (
                             <button 
                               onClick={() => adminUnlockSubmissionAction(selectedItem.id).then(() => { loadData(); setSelectedItem(null); })}
-                              style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "#ef4444", padding: "0.6rem 1.25rem", borderRadius: "10px", cursor: "pointer", fontSize: "0.85rem", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}
+                              style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.2)", color: "#ef4444", padding: "0.7rem 1.5rem", borderRadius: "12px", cursor: "pointer", fontSize: "0.9rem", fontWeight: "700", display: "flex", alignItems: "center", gap: "10px" }}
                             >
-                              <Unlock size={16} /> Freigeben
+                              <Unlock size={18} /> Freigeben
                             </button>
                           ) : (
                             !selectedItem.lockedBy && (
                               <button 
                                 onClick={() => handleClaimTicket(selectedItem.id)}
-                                style={{ background: "#3b82f6", border: "none", color: "white", padding: "0.6rem 1.25rem", borderRadius: "10px", cursor: "pointer", fontSize: "0.85rem", fontWeight: "700", display: "flex", alignItems: "center", gap: "8px" }}
+                                style={{ background: "#3b82f6", border: "none", color: "white", padding: "0.7rem 1.5rem", borderRadius: "12px", cursor: "pointer", fontSize: "0.9rem", fontWeight: "700", display: "flex", alignItems: "center", gap: "10px", boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)" }}
                               >
-                                <Lock size={16} /> Ticket beanspruchen
+                                <Lock size={18} /> Ticket beanspruchen
                               </button>
                             )
                           )}
@@ -397,25 +410,25 @@ export default function LovanarisAdminDashboard() {
                     </div>
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "2.5rem", alignItems: "start" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "3rem", alignItems: "start" }}>
                     {/* Left: Content & Actions */}
-                    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
                       
                       {/* PREVIEW BOX */}
                       <div style={{ 
                         background: "#0c0c0c", 
                         border: "1px solid #1a1a1a", 
-                        borderRadius: "20px", 
-                        padding: "2rem",
+                        borderRadius: "24px", 
+                        padding: "2.5rem",
                         position: "relative",
                         overflow: "hidden"
                       }}>
-                        <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "0.1em" }}>Eingereichter Inhalt</div>
+                        <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "800", textTransform: "uppercase", marginBottom: "1.25rem", letterSpacing: "0.15em" }}>Inhalt</div>
                         <div style={{ 
-                          fontSize: "1rem", 
-                          lineHeight: "1.6", 
+                          fontSize: "1.1rem", 
+                          lineHeight: "1.7", 
                           color: "#9ca3af",
-                          maxHeight: "120px",
+                          maxHeight: "150px",
                           overflow: "hidden",
                           maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
                           WebkitMaskImage: "linear-gradient(to bottom, black 50%, transparent 100%)"
@@ -425,25 +438,24 @@ export default function LovanarisAdminDashboard() {
                         <button 
                           onClick={() => setShowReadingModal(true)}
                           style={{ 
-                            marginTop: "1.5rem", 
+                            marginTop: "2rem", 
                             width: "100%", 
                             background: "#1a1a1a", 
-                            border: "1px solid #333", 
+                            border: "1px solid #222", 
                             color: "white", 
-                            padding: "1rem", 
-                            borderRadius: "12px", 
+                            padding: "1.25rem", 
+                            borderRadius: "16px", 
                             cursor: "pointer", 
-                            fontWeight: "700", 
+                            fontWeight: "800", 
                             display: "flex", 
                             alignItems: "center", 
                             justifyContent: "center", 
-                            gap: "10px",
+                            gap: "12px",
+                            fontSize: "1.05rem",
                             transition: "all 0.2s ease"
                           }}
-                          onMouseEnter={e => e.currentTarget.style.background = "#222"}
-                          onMouseLeave={e => e.currentTarget.style.background = "#1a1a1a"}
                         >
-                          <BookOpen size={20} /> Geschichte lesen
+                          <BookOpen size={22} /> Geschichte lesen
                         </button>
                       </div>
 
@@ -452,10 +464,10 @@ export default function LovanarisAdminDashboard() {
                         <div style={{ 
                           background: "#0c0c0c", 
                           border: "1px solid #1a1a1a", 
-                          borderRadius: "20px", 
-                          padding: "2rem" 
+                          borderRadius: "24px", 
+                          padding: "2.5rem" 
                         }}>
-                          <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1.5rem", letterSpacing: "0.1em" }}>
+                          <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "800", textTransform: "uppercase", marginBottom: "1.5rem", letterSpacing: "0.15em" }}>
                             {selectedItem._type === 'submission' ? 'Bearbeitung & Status' : 'Aktion'}
                           </div>
                           
@@ -469,19 +481,19 @@ export default function LovanarisAdminDashboard() {
                                   width: "100%", 
                                   background: "#111", 
                                   border: "1px solid #222", 
-                                  borderRadius: "12px", 
-                                  padding: "1.25rem", 
+                                  borderRadius: "16px", 
+                                  padding: "1.5rem", 
                                   color: "white", 
-                                  fontSize: "0.95rem",
+                                  fontSize: "1rem",
                                   outline: "none",
-                                  minHeight: "120px",
-                                  marginBottom: "1.5rem"
+                                  minHeight: "140px",
+                                  marginBottom: "2rem"
                                 }}
                               />
-                              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
-                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'approved')} bg="#10b981" label="Veröffentlichen" icon={<CheckCircle size={16}/>} />
-                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'info_needed')} bg="#3b82f6" label="Rückfrage" icon={<MessageSquare size={16}/>} />
-                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'rejected')} bg="#ef4444" label="Ablehnen" icon={<XCircle size={16}/>} />
+                              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.25rem" }}>
+                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'approved')} bg="#10b981" label="Veröffentlichen" icon={<CheckCircle size={18}/>} />
+                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'info_needed')} bg="#3b82f6" label="Rückfrage" icon={<MessageSquare size={18}/>} />
+                                <StatusBtn onClick={() => handleUpdateStatus(selectedItem.id, 'rejected')} bg="#ef4444" label="Ablehnen" icon={<XCircle size={18}/>} />
                               </div>
                             </>
                           ) : (
@@ -490,20 +502,21 @@ export default function LovanarisAdminDashboard() {
                               disabled={selectedItem.status === 'processed'}
                               style={{ 
                                 width: "100%", 
-                                background: selectedItem.status === 'processed' ? "#222" : "#3b82f6", 
+                                background: selectedItem.status === 'processed' ? "#1a1a1a" : "#3b82f6", 
                                 color: "white", 
                                 border: "none", 
                                 padding: "1.25rem", 
-                                borderRadius: "12px", 
-                                fontWeight: "700", 
+                                borderRadius: "16px", 
+                                fontWeight: "800", 
                                 cursor: selectedItem.status === 'processed' ? "default" : "pointer", 
                                 display: "flex", 
                                 alignItems: "center", 
                                 justifyContent: "center", 
-                                gap: "10px" 
+                                gap: "12px",
+                                fontSize: "1.1rem"
                               }}
                             >
-                              <CheckCircle size={20} /> {selectedItem.status === 'processed' ? 'Bereits bearbeitet' : 'Als erledigt markieren'}
+                              <CheckCircle size={22} /> {selectedItem.status === 'processed' ? 'Bereits bearbeitet' : 'Als erledigt markieren'}
                             </button>
                           )}
                         </div>
@@ -514,9 +527,9 @@ export default function LovanarisAdminDashboard() {
                     <aside style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                       
                       {/* STATS CARD */}
-                      <div style={{ background: "#0c0c0c", borderRadius: "16px", border: "1px solid #1a1a1a", padding: "1.5rem" }}>
-                        <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "700", textTransform: "uppercase", marginBottom: "1.25rem", letterSpacing: "0.1em" }}>Info-Panel</div>
-                        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+                      <div style={{ background: "#0c0c0c", borderRadius: "20px", border: "1px solid #1a1a1a", padding: "1.75rem" }}>
+                        <div style={{ fontSize: "0.75rem", color: "#444", fontWeight: "800", textTransform: "uppercase", marginBottom: "1.5rem", letterSpacing: "0.15em" }}>Details</div>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
                           <MetaItem label="Eingang" value={new Date(selectedItem.createdAt).toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })} icon={<Calendar size={14}/>} />
                           <MetaItem label="Status" value={selectedItem.status.toUpperCase()} icon={<Clock size={14}/>} color={selectedItem.status === 'pending' ? '#3b82f6' : '#10b981'} />
                           
@@ -535,19 +548,19 @@ export default function LovanarisAdminDashboard() {
                       </div>
 
                       {selectedItem.validationNote && (
-                        <div style={{ background: "rgba(245, 158, 11, 0.05)", borderRadius: "16px", border: "1px solid rgba(245, 158, 11, 0.1)", padding: "1.25rem" }}>
-                          <div style={{ fontSize: "0.7rem", color: "#f59e0b", fontWeight: "800", textTransform: "uppercase", marginBottom: "0.75rem" }}>Inhalts-Validierung</div>
-                          <div style={{ fontSize: "0.85rem", color: "#d97706", lineHeight: "1.5", fontStyle: "italic" }}>"{selectedItem.validationNote}"</div>
+                        <div style={{ background: "rgba(245, 158, 11, 0.08)", borderRadius: "20px", border: "1px solid rgba(245, 158, 11, 0.2)", padding: "1.5rem" }}>
+                          <div style={{ fontSize: "0.7rem", color: "#f59e0b", fontWeight: "900", textTransform: "uppercase", marginBottom: "0.75rem", letterSpacing: "0.1em" }}>Validierungs-Notiz</div>
+                          <div style={{ fontSize: "0.95rem", color: "#f59e0b", lineHeight: "1.6", fontStyle: "italic", fontWeight: "500" }}>"{selectedItem.validationNote}"</div>
                         </div>
                       )}
 
                       {session.admin.role === 'super_admin' && (
-                        <div style={{ marginTop: "1rem", padding: "1rem", borderRadius: "12px", background: "rgba(239, 68, 68, 0.03)", border: "1px solid rgba(239, 68, 68, 0.1)" }}>
+                        <div style={{ marginTop: "1rem", padding: "1.25rem", borderRadius: "16px", background: "rgba(239, 68, 68, 0.04)", border: "1px solid rgba(239, 68, 68, 0.15)" }}>
                           <button 
                             onClick={() => { if(confirm('Element endgültig löschen? Dies kann nicht rückgängig gemacht werden.')) adminDeleteSubmissionAction(selectedItem.id).then(() => { loadData(); setSelectedItem(null); }) }}
-                            style={{ width: "100%", background: "transparent", color: "#ef4444", border: "none", padding: "0.5rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", fontSize: "0.8rem", fontWeight: "600" }}
+                            style={{ width: "100%", background: "transparent", color: "#ef4444", border: "none", padding: "0.5rem", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", fontSize: "0.9rem", fontWeight: "700" }}
                           >
-                            <Trash2 size={14} /> Element löschen
+                            <Trash2 size={16} /> Element löschen
                           </button>
                         </div>
                       )}
@@ -555,11 +568,13 @@ export default function LovanarisAdminDashboard() {
                   </div>
                 </motion.div>
               ) : (
-                <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", opacity: 0.5 }}>
-                  <div style={{ padding: "3rem", border: "2px dashed #1a1a1a", borderRadius: "40px", textAlign: "center" }}>
-                    <Inbox size={48} style={{ marginBottom: "1.5rem", color: "#333" }} />
-                    <h3 style={{ margin: 0, color: "#555" }}>Bereit für die Bearbeitung</h3>
-                    <p style={{ fontSize: "0.9rem", color: "#333", maxWidth: "280px", margin: "10px auto" }}>Wähle links einen Eintrag aus der Liste aus, um Details einzusehen oder Tickets zu beanspruchen.</p>
+                <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", opacity: 0.6 }}>
+                  <div style={{ padding: "4rem", border: "2px dashed #1a1a1a", borderRadius: "48px", textAlign: "center" }}>
+                    <div style={{ width: "80px", height: "80px", background: "#0c0c0c", borderRadius: "24px", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 2rem", border: "1px solid #1a1a1a" }}>
+                      <Inbox size={40} style={{ color: "#333" }} />
+                    </div>
+                    <h3 style={{ margin: 0, color: "#aaa", fontSize: "1.5rem", fontWeight: "800" }}>Bereit zur Bearbeitung</h3>
+                    <p style={{ fontSize: "1rem", color: "#444", maxWidth: "320px", margin: "1rem auto 0", lineHeight: "1.5" }}>Wähle links einen Eintrag aus, um Details einzusehen oder Tickets zu beanspruchen.</p>
                   </div>
                 </div>
               )}
@@ -578,8 +593,8 @@ export default function LovanarisAdminDashboard() {
             style={{ 
               position: "fixed", 
               inset: 0, 
-              background: "rgba(0,0,0,0.9)", 
-              zIndex: 1000, 
+              background: "rgba(0,0,0,0.95)", 
+              zIndex: 2000, 
               display: "flex", 
               alignItems: "center", 
               justifyContent: "center",
@@ -588,46 +603,46 @@ export default function LovanarisAdminDashboard() {
             }}
           >
             <motion.div 
-              initial={{ scale: 0.95, y: 20 }}
+              initial={{ scale: 0.95, y: 30 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 20 }}
+              exit={{ scale: 0.95, y: 30 }}
               style={{ 
                 width: "100%", 
-                maxWidth: "900px", 
-                height: "90vh", 
+                maxWidth: "1000px", 
+                height: "85vh", 
                 background: "#0c0c0c", 
-                borderRadius: "32px", 
+                borderRadius: "40px", 
                 border: "1px solid #222", 
                 display: "flex", 
                 flexDirection: "column",
                 overflow: "hidden",
-                boxShadow: "0 50px 100px rgba(0,0,0,0.8)"
+                boxShadow: "0 50px 100px rgba(0,0,0,0.9)"
               }}
             >
-              <div style={{ padding: "2rem", borderBottom: "1px solid #1a1a1a", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div style={{ padding: "2.5rem 3rem", borderBottom: "1px solid #1a1a1a", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <div style={{ fontSize: "0.7rem", color: "#555", fontWeight: "700", textTransform: "uppercase", marginBottom: "4px" }}>Lesemodus</div>
-                  <h2 style={{ margin: 0, fontSize: "1.5rem" }}>{selectedItem.category || (selectedItem.type === 'deletion' ? 'Löschantrag' : 'Kontaktanfrage')}</h2>
+                  <div style={{ fontSize: "0.75rem", color: "#3b82f6", fontWeight: "900", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "0.15em" }}>Lesemodus</div>
+                  <h2 style={{ margin: 0, fontSize: "1.75rem", fontWeight: "800", color: "white" }}>{selectedItem.category || (selectedItem.type === 'deletion' ? 'Löschantrag' : 'Kontaktanfrage')}</h2>
                 </div>
                 <button 
                   onClick={() => setShowReadingModal(false)}
-                  style={{ background: "#222", border: "none", color: "white", width: "40px", height: "40px", borderRadius: "12px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  style={{ background: "#1a1a1a", border: "1px solid #333", color: "white", width: "48px", height: "48px", borderRadius: "16px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
-                  <X size={20} />
+                  <X size={24} />
                 </button>
               </div>
 
               <div 
                 data-lenis-prevent
-                style={{ flex: 1, overflowY: "auto", padding: "4rem", lineHeight: "1.8", fontSize: "1.2rem", color: "#d1d5db", whiteSpace: "pre-wrap" }}
+                style={{ flex: 1, overflowY: "auto", padding: "4rem 5rem", lineHeight: "1.9", fontSize: "1.3rem", color: "#d1d5db", whiteSpace: "pre-wrap", fontFamily: "serif" }}
               >
                 {selectedItem._type === 'submission' ? selectedItem.story : selectedItem.message}
               </div>
 
-              <div style={{ padding: "1.5rem", borderTop: "1px solid #1a1a1a", textAlign: "center", background: "#0a0a0a" }}>
+              <div style={{ padding: "2rem", borderTop: "1px solid #1a1a1a", textAlign: "center", background: "#0a0a0a" }}>
                 <button 
                   onClick={() => setShowReadingModal(false)}
-                  style={{ background: "white", color: "black", border: "none", padding: "0.75rem 2rem", borderRadius: "12px", fontWeight: "700", cursor: "pointer" }}
+                  style={{ background: "white", color: "black", border: "none", padding: "1rem 3rem", borderRadius: "16px", fontWeight: "800", cursor: "pointer", fontSize: "1.1rem", boxShadow: "0 10px 30px rgba(255,255,255,0.2)" }}
                 >
                   Lesen beenden
                 </button>
@@ -648,30 +663,32 @@ function NavButton({ active, onClick, icon, label, count }: any) {
         display: "flex", 
         alignItems: "center", 
         justifyContent: "space-between",
-        padding: "0.75rem 1rem", 
-        borderRadius: "10px", 
-        background: active ? "rgba(59, 130, 246, 0.1)" : "transparent", 
-        color: active ? "#3b82f6" : "#888", 
+        padding: "0.9rem 1.25rem", 
+        borderRadius: "14px", 
+        background: active ? "rgba(59, 130, 246, 0.12)" : "transparent", 
+        color: active ? "#3b82f6" : "#666", 
         border: "none", 
         cursor: "pointer", 
         width: "100%",
         textAlign: "left",
-        transition: "all 0.2s ease",
-        marginBottom: "4px"
+        transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+        marginBottom: "6px"
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        {icon}
-        <span style={{ fontWeight: active ? "700" : "500", fontSize: "0.9rem" }}>{label}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+        <div style={{ color: active ? "#3b82f6" : "#444" }}>{icon}</div>
+        <span style={{ fontWeight: active ? "800" : "600", fontSize: "0.95rem" }}>{label}</span>
       </div>
       {count !== undefined && count > 0 && (
         <span style={{ 
-          background: active ? "#3b82f6" : "#222", 
-          color: active ? "white" : "#888", 
-          padding: "2px 6px", 
-          borderRadius: "6px", 
-          fontSize: "0.65rem", 
-          fontWeight: "800"
+          background: active ? "#3b82f6" : "#1a1a1a", 
+          color: active ? "white" : "#444", 
+          padding: "3px 8px", 
+          borderRadius: "8px", 
+          fontSize: "0.75rem", 
+          fontWeight: "900",
+          minWidth: "22px",
+          textAlign: "center"
         }}>
           {count}
         </span>
@@ -696,25 +713,31 @@ function ItemCard({ active, onClick, title, subtitle, status, date, lockedBy, ic
     <div 
       onClick={onClick}
       style={{ 
-        padding: "1rem", 
-        borderRadius: "12px", 
-        background: active ? "rgba(255,255,255,0.03)" : "transparent",
+        padding: "1.25rem", 
+        borderRadius: "16px", 
+        background: active ? "#121212" : "transparent",
         border: `1px solid ${active ? "#222" : "transparent"}`,
         cursor: "pointer",
         transition: "all 0.2s ease"
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#444" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#444" }}>
           {icon}
-          <span style={{ fontSize: "0.65rem", fontWeight: "700", textTransform: "uppercase" }}>{subtitle}</span>
+          <span style={{ fontSize: "0.7rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.05em" }}>{subtitle}</span>
         </div>
-        <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: getStatusColor(status) }} />
+        <div style={{ 
+          width: "8px", 
+          height: "8px", 
+          borderRadius: "50%", 
+          background: getStatusColor(status),
+          boxShadow: `0 0 10px ${getStatusColor(status)}33`
+        }} />
       </div>
-      <div style={{ fontWeight: "700", color: active ? "white" : "#888", fontSize: "0.85rem", marginBottom: "0.4rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</div>
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.65rem" }}>
+      <div style={{ fontWeight: "800", color: active ? "white" : "#888", fontSize: "0.95rem", marginBottom: "0.5rem", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</div>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", fontWeight: "600" }}>
         <span style={{ color: "#333" }}>{new Date(date).toLocaleDateString('de-DE')}</span>
-        {lockedBy && <span style={{ color: "#ef4444", fontWeight: "700" }}>{lockedBy}</span>}
+        {lockedBy && <span style={{ color: "#ef4444" }}>{lockedBy}</span>}
       </div>
     </div>
   );
@@ -729,15 +752,16 @@ function StatusBtn({ onClick, bg, label, icon }: any) {
         background: bg, 
         color: "white", 
         border: "none", 
-        padding: "0.75rem", 
-        borderRadius: "10px", 
-        fontWeight: "700", 
+        padding: "0.9rem", 
+        borderRadius: "12px", 
+        fontWeight: "800", 
         cursor: "pointer", 
         display: "flex", 
         alignItems: "center", 
         justifyContent: "center", 
-        gap: "8px", 
-        fontSize: "0.75rem" 
+        gap: "10px", 
+        fontSize: "0.85rem",
+        boxShadow: "0 4px 15px rgba(0,0,0,0.2)"
       }}
     >
       {icon} {label}
@@ -748,9 +772,9 @@ function StatusBtn({ onClick, bg, label, icon }: any) {
 function MetaItem({ label, value, icon, color }: any) {
   return (
     <div>
-      <div style={{ fontSize: "0.65rem", color: "#444", fontWeight: "800", textTransform: "uppercase", marginBottom: "4px" }}>{label}</div>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.85rem", color: color || "#bbb", fontWeight: color ? "700" : "500" }}>
-        {icon} {value}
+      <div style={{ fontSize: "0.7rem", color: "#444", fontWeight: "900", textTransform: "uppercase", marginBottom: "6px", letterSpacing: "0.05em" }}>{label}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "0.9rem", color: color || "#bbb", fontWeight: color ? "800" : "600" }}>
+        <div style={{ color: color || "#444" }}>{icon}</div> {value}
       </div>
     </div>
   );
