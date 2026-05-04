@@ -104,7 +104,7 @@ export default function LovanarisFaqPage() {
         ))}
 
         <div className="lovanaris-legal-block" style={{ marginTop: "4rem", textAlign: "center" }}>
-          <h3 style={{ marginBottom: "1rem", color: "white" }}>Nicht das Richtige dabei?</h3>
+          <h3 style={{ marginBottom: "1rem", color: "var(--lovanaris-text)" }}>Nicht das Richtige dabei?</h3>
           <p style={{ marginBottom: "2rem" }}>Schreib uns direkt eine E-Mail oder schau dir unser detailliertes Regelwerk an.</p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
             <Link href="/regelwerk" className="btn-lovanaris btn-lovanaris-outline">Regelwerk lesen</Link>

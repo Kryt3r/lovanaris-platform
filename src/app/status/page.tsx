@@ -125,12 +125,12 @@ export default function LovanarisStatusPage() {
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <div style={{ fontSize: "0.8rem", color: "var(--lovanaris-text-muted)", marginBottom: "0.25rem" }}>Ident-Code</div>
-                    <div style={{ fontWeight: "700", letterSpacing: "0.1em", color: "white" }}>{result.code}</div>
+                    <div style={{ fontWeight: "700", letterSpacing: "0.1em", color: "var(--lovanaris-text)" }}>{result.code}</div>
                   </div>
                 </div>
                 
                 <div style={{ fontSize: "0.9rem", lineHeight: "1.6", color: "var(--lovanaris-text-muted)" }}>
-                  <span style={{ color: "white", fontWeight: "600" }}>Kategorie:</span> {result.category}
+                  <span style={{ color: "var(--lovanaris-text)", fontWeight: "600" }}>Kategorie:</span> {result.category}
                 </div>
               </div>
 
@@ -177,7 +177,7 @@ export default function LovanarisStatusPage() {
                           background: msg.role === "admin" ? "rgba(59, 130, 246, 0.08)" : "rgba(16, 185, 129, 0.08)",
                           border: "1px solid",
                           borderColor: msg.role === "admin" ? "rgba(59, 130, 246, 0.2)" : "rgba(16, 185, 129, 0.2)",
-                          color: "white",
+                          color: "var(--lovanaris-text)",
                           fontSize: "0.95rem",
                           lineHeight: "1.6"
                         }}>
@@ -195,7 +195,7 @@ export default function LovanarisStatusPage() {
                 <div style={{ borderTop: "1px solid var(--lovanaris-border)", paddingTop: "2rem" }}>
                   {canReply ? (
                     <div>
-                      <label style={{ fontSize: "0.85rem", color: "white", fontWeight: "600", display: "block", marginBottom: "0.75rem" }}>Auf Rückfrage antworten:</label>
+                      <label style={{ fontSize: "0.85rem", color: "var(--lovanaris-text)", fontWeight: "600", display: "block", marginBottom: "0.75rem" }}>Auf Rückfrage antworten:</label>
                       <textarea 
                         className="lovanaris-textarea" 
                         value={replyText}

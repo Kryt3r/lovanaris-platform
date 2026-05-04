@@ -27,10 +27,10 @@ export default function LovanarisImpressumPage() {
         >
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem", color: "var(--lovanaris-primary)" }}>
             <MapPin size={24} />
-            <h2 style={{ fontSize: "1.5rem", color: "white", margin: 0 }}>Betreiber & Kontakt</h2>
+            <h2 style={{ fontSize: "1.5rem", color: "var(--lovanaris-text)", margin: 0 }}>Betreiber & Kontakt</h2>
           </div>
           <div style={{ color: "var(--lovanaris-text-muted)", lineHeight: "1.8" }}>
-            <p style={{ fontSize: "1.1rem", color: "white", fontWeight: "600", marginBottom: "0.5rem" }}>Robin Lester</p>
+            <p style={{ fontSize: "1.1rem", color: "var(--lovanaris-text)", fontWeight: "600", marginBottom: "0.5rem" }}>Robin Lester</p>
             <p>Postflex #24357</p>
             <p>Emsdettener Str. 10</p>
             <p>48268 Greven</p>
@@ -50,7 +50,7 @@ export default function LovanarisImpressumPage() {
         >
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem", color: "var(--lovanaris-primary)" }}>
             <Info size={24} />
-            <h2 style={{ fontSize: "1.5rem", color: "white", margin: 0 }}>Projektinhalt & Redaktion</h2>
+            <h2 style={{ fontSize: "1.5rem", color: "var(--lovanaris-text)", margin: 0 }}>Projektinhalt & Redaktion</h2>
           </div>
           <p style={{ color: "var(--lovanaris-text-muted)", lineHeight: "1.7" }}>
             Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:<br />
@@ -68,7 +68,7 @@ export default function LovanarisImpressumPage() {
         >
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem", color: "var(--lovanaris-primary)" }}>
             <Scale size={24} />
-            <h2 style={{ fontSize: "1.5rem", color: "white", margin: 0 }}>Haftungsausschluss</h2>
+            <h2 style={{ fontSize: "1.5rem", color: "var(--lovanaris-text)", margin: 0 }}>Haftungsausschluss</h2>
           </div>
           <div style={{ color: "var(--lovanaris-text-muted)", lineHeight: "1.7", display: "grid", gap: "1rem" }}>
             <p>

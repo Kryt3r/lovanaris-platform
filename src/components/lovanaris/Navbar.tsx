@@ -21,7 +21,7 @@ export function LovanarisNavbar() {
       width: "max-content",
       maxWidth: "90%",
     }}>
-      <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", color: "white" }}>
+      <Link href="/" style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", color: "var(--lovanaris-text)" }}>
         <Shield size={20} className="text-lovanaris-primary" style={{ color: "var(--lovanaris-primary)" }} />
         <span style={{ fontWeight: "700", letterSpacing: "-0.02em" }}>LOVANARIS</span>
       </Link>

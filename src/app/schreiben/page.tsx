@@ -235,7 +235,7 @@ export default function LovanarisSchreibenPage() {
                   }}
                   onClick={() => setIsSelectOpen(!isSelectOpen)}
                 >
-                  <span style={{ color: triggerCategory ? "white" : "var(--lovanaris-text-muted)" }}>
+                  <span style={{ color: triggerCategory ? "var(--lovanaris-text)" : "var(--lovanaris-text-muted)" }}>
                     {triggerCategory || "Bitte wählen..."}
                   </span>
                   <motion.div animate={{ rotate: isSelectOpen ? 180 : 0 }}>
@@ -272,7 +272,7 @@ export default function LovanarisSchreibenPage() {
                             cursor: "pointer",
                             transition: "all 0.2s ease",
                             background: triggerCategory === cat ? "var(--lovanaris-primary-soft)" : "transparent",
-                            color: triggerCategory === cat ? "var(--lovanaris-primary)" : "white",
+                            color: triggerCategory === cat ? "var(--lovanaris-primary)" : "var(--lovanaris-text)",
                             fontSize: "0.95rem"
                           }}
                           onClick={() => {
@@ -349,8 +349,8 @@ export default function LovanarisSchreibenPage() {
               transition={{ delay: 0.2 }}
               style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}
             >
-              <div style={{ padding: "1.5rem", background: "rgba(16, 185, 129, 0.1)", borderRadius: "100px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
-                <CheckCircle size={48} color="var(--lovanaris-accent)" />
+              <div style={{ padding: "1.5rem", background: "rgba(22, 163, 74, 0.1)", borderRadius: "100px", border: "1px solid rgba(22, 163, 74, 0.2)" }}>
+                <CheckCircle size={48} color="#16a34a" />
               </div>
             </motion.div>
 
@@ -375,8 +375,8 @@ export default function LovanarisSchreibenPage() {
               initial={{ scale: 0.8, opacity: 0 }} 
               animate={{ scale: 1, opacity: 1 }} 
               transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
-              style={{ 
-                background: "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(0,0,0,0.3) 100%)",
+              style={{
+                background: "var(--lovanaris-surface)",
                 border: "2px dashed var(--lovanaris-border)",
                 padding: "3rem 2rem",
                 borderRadius: "24px",
@@ -389,39 +389,38 @@ export default function LovanarisSchreibenPage() {
                   <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--lovanaris-primary)", fontWeight: "700", marginBottom: "1rem" }}>
                     Öffentlicher Zugangs-Code
                   </div>
-                  <div 
-                    style={{ 
-                      fontSize: "3.5rem", 
-                      fontFamily: "monospace", 
-                      letterSpacing: "0.3em", 
-                      color: "white",
-                      textShadow: "0 0 30px rgba(59, 130, 246, 0.3)",
+                  <div
+                    style={{
+                      fontSize: "3.5rem",
+                      fontFamily: "monospace",
+                      letterSpacing: "0.3em",
+                      color: "var(--lovanaris-text)",
                     }}
                   >
                     {code}
                   </div>
-                  <p style={{ fontSize: "0.8rem", color: "#666", marginTop: "10px" }}>Wird benötigt, um den Status deiner Geschichte zu prüfen.</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--lovanaris-text-muted)", marginTop: "10px" }}>Wird benötigt, um den Status deiner Geschichte zu prüfen.</p>
                 </div>
 
-                <div style={{ padding: "2rem", background: "rgba(239, 68, 68, 0.05)", borderRadius: "16px", border: "1px solid rgba(239, 68, 68, 0.1)" }}>
-                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#ef4444", fontWeight: "700", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                <div style={{ padding: "2rem", background: "rgba(220, 38, 38, 0.05)", borderRadius: "16px", border: "1px solid rgba(220, 38, 38, 0.2)" }}>
+                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#dc2626", fontWeight: "700", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                     <ShieldCheck size={16} /> Geheimer Lösch-Key
                   </div>
-                  <div 
-                    style={{ 
-                      fontSize: "1.5rem", 
-                      fontFamily: "monospace", 
-                      letterSpacing: "0.2em", 
-                      color: "white",
-                      background: "rgba(0,0,0,0.3)",
+                  <div
+                    style={{
+                      fontSize: "1.5rem",
+                      fontFamily: "monospace",
+                      letterSpacing: "0.2em",
+                      color: "var(--lovanaris-text)",
+                      background: "var(--lovanaris-bg)",
                       padding: "1rem",
                       borderRadius: "8px",
-                      border: "1px solid #333"
+                      border: "1px solid var(--lovanaris-border)"
                     }}
                   >
                     {securityToken}
                   </div>
-                  <p style={{ fontSize: "0.8rem", color: "#888", marginTop: "10px" }}><strong>Diesen Key niemals teilen!</strong> Nur hiermit kannst du später eine Löschung beantragen.</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--lovanaris-text-muted)", marginTop: "10px" }}><strong style={{ color: "var(--lovanaris-text)" }}>Diesen Key niemals teilen!</strong> Nur hiermit kannst du später eine Löschung beantragen.</p>
                 </div>
               </div>
 
@@ -454,7 +453,7 @@ export default function LovanarisSchreibenPage() {
               animate={{ opacity: 1 }} 
               transition={{ delay: 0.8 }}
               className="lovanaris-crisis-banner" 
-              style={{ background: "rgba(245, 158, 11, 0.05)", borderColor: "rgba(245, 158, 11, 0.2)", color: "#f59e0b", textAlign: "left" }}
+              style={{ background: "rgba(217, 119, 6, 0.1)", borderColor: "rgba(217, 119, 6, 0.3)", color: "#d97706", textAlign: "left" }}
             >
               <ShieldAlert size={24} style={{ flexShrink: 0 }} />
               <div>

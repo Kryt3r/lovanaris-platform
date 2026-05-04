@@ -61,7 +61,7 @@ export default function LovanarisDatenschutzPage() {
           >
             <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem", color: "var(--lovanaris-primary)" }}>
               {section.icon}
-              <h2 style={{ fontSize: "1.25rem", color: "white" }}>{section.title}</h2>
+              <h2 style={{ fontSize: "1.25rem", color: "var(--lovanaris-text)" }}>{section.title}</h2>
             </div>
             <p style={{ color: "var(--lovanaris-text-muted)", lineHeight: "1.6" }}>{section.content}</p>
           </motion.section>
@@ -70,7 +70,7 @@ export default function LovanarisDatenschutzPage() {
         <div className="lovanaris-legal-block" style={{ marginTop: "2rem" }}>
           <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "1rem" }}>
             <Mail size={20} color="var(--lovanaris-primary)" />
-            <h3 style={{ color: "white", margin: 0 }}>Kontakt für Datenschutzfragen</h3>
+            <h3 style={{ color: "var(--lovanaris-text)", margin: 0 }}>Kontakt für Datenschutzfragen</h3>
           </div>
           <p>Bei Fragen zur Datenverarbeitung kannst du dich an <strong>contact@lovanaris.de</strong> wenden. Bitte beachte, dass wir ohne deinen Code keine Auskunft über spezifische Einsendungen geben können.</p>
         </div>

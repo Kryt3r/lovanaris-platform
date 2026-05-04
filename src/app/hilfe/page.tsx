@@ -136,8 +136,8 @@ export default function LovanarisHilfePage() {
               borderRadius: "100px",
               border: "1px solid",
               borderColor: activeTab === country.id ? "var(--lovanaris-primary)" : "var(--lovanaris-border)",
-              background: activeTab === country.id ? "var(--lovanaris-primary-soft)" : "rgba(255,255,255,0.03)",
-              color: activeTab === country.id ? "var(--lovanaris-primary)" : "white",
+              background: activeTab === country.id ? "var(--lovanaris-primary-soft)" : "var(--lovanaris-surface)",
+              color: activeTab === country.id ? "var(--lovanaris-primary)" : "var(--lovanaris-text)",
               fontSize: "1rem",
               fontWeight: "600",
               cursor: "pointer",
@@ -188,7 +188,7 @@ export default function LovanarisHilfePage() {
                     }}>
                       <Heart size={24} />
                     </div>
-                    <h3 style={{ fontSize: "1.25rem", color: "white", margin: 0, lineHeight: "1.3" }}>{resource.name}</h3>
+                    <h3 style={{ fontSize: "1.25rem", color: "var(--lovanaris-text)", margin: 0, lineHeight: "1.3" }}>{resource.name}</h3>
                   </div>
                   <p style={{ color: "var(--lovanaris-text-muted)", fontSize: "0.95rem", lineHeight: "1.6", marginBottom: "2rem" }}>
                     {resource.description}
@@ -226,8 +226,8 @@ export default function LovanarisHilfePage() {
                       justifyContent: "center",
                       gap: "0.75rem",
                       padding: "1rem",
-                      background: "rgba(255,255,255,0.05)",
-                      color: "white",
+                      background: "var(--lovanaris-bg)",
+                      color: "var(--lovanaris-text)",
                       borderRadius: "12px",
                       textDecoration: "none",
                       fontWeight: "600",
@@ -251,9 +251,9 @@ export default function LovanarisHilfePage() {
           style={{ 
             marginTop: "6rem", 
             padding: "4rem", 
-            background: "rgba(59, 130, 246, 0.03)", 
+            background: "rgba(181, 99, 69, 0.05)", 
             borderRadius: "32px", 
-            border: "1px solid rgba(59, 130, 246, 0.1)",
+            border: "1px solid rgba(181, 99, 69, 0.1)",
             textAlign: "center"
           }}
         >
@@ -275,15 +275,15 @@ export default function LovanarisHilfePage() {
             Wenn du dich in unmittelbarer Gefahr befindest, zögere nicht, die Polizei zu rufen. In allen EU-Ländern erreichst du den Notruf unter der <strong>112</strong>. Dein Schutz hat höchste Priorität.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "3rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "white" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--lovanaris-text)" }}>
               <Users size={20} color="var(--lovanaris-primary)" />
               <span>Anonyme Beratung</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "white" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--lovanaris-text)" }}>
               <Lock size={20} color="var(--lovanaris-primary)" />
               <span>Verschlüsselte Chats</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "white" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem", color: "var(--lovanaris-text)" }}>
               <Globe size={20} color="var(--lovanaris-primary)" />
               <span>Ortsunabhängig</span>
             </div>
