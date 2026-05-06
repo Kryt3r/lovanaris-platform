@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle, Copy, AlertCircle, Info, ShieldAlert, Scale, ArrowRight, EyeOff, ShieldCheck, Phone, ListChecks, ChevronDown, Loader2 } from "lucide-react";
+import { Send, CheckCircle, Copy, ArrowRight, EyeOff, ShieldCheck, ChevronDown, Loader2, BookOpen, Lock, FileCheck, AlertTriangle, Heart } from "lucide-react";
 import Link from "next/link";
 import { submitStoryAction } from "@/lib/actions/lovanaris";
 
@@ -31,14 +31,12 @@ export default function LovanarisSchreibenPage() {
   const [startTime] = useState(Date.now());
   const [hpValue, setHpValue] = useState(""); // Honeypot
   
+  // Reduzierte, essenzielle Consents
   const [consents, setConsents] = useState({
-    noEmergency: false,
-    anonymity: false,
-    truth: false,
-    legal: false,
-    redaction: false,
-    noGuarantee: false,
-    age: false
+    notEmergency: false,
+    age: false,
+    anonymized: false,
+    understood: false
   });
 
   // Close custom select when clicking outside
@@ -52,12 +50,12 @@ export default function LovanarisSchreibenPage() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const allConsentsGiven = consents.notEmergency && consents.age && consents.anonymized && consents.understood;
+
   const validateStep1 = () => {
-    if (consents.noEmergency && consents.legal && consents.age) {
+    if (allConsentsGiven) {
       setStep(2);
       window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      alert("Bitte bestätige die rechtlichen Hinweise, dein Alter und den Notfall-Ausschluss.");
     }
   };
 
@@ -75,11 +73,7 @@ export default function LovanarisSchreibenPage() {
       return;
     }
     if (!triggerCategory) {
-      alert("Bitte wähle eine passende Trigger-Kategorie aus.");
-      return;
-    }
-    if (!consents.anonymity || !consents.truth || !consents.redaction || !consents.noGuarantee) {
-      alert("Bitte bestätige alle Sicherheits- und Einwilligungsrichtlinien.");
+      alert("Bitte wähle eine passende Kategorie aus.");
       return;
     }
 
@@ -104,8 +98,8 @@ export default function LovanarisSchreibenPage() {
 
   const [showCopyToast, setShowCopyToast] = useState(false);
 
-  const copyCode = () => {
-    navigator.clipboard.writeText(code);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
     setShowCopyToast(true);
     setTimeout(() => setShowCopyToast(false), 3000);
   };
@@ -113,6 +107,7 @@ export default function LovanarisSchreibenPage() {
   return (
     <div className="lovanaris-form-wrapper">
       
+      {/* Step Indicator */}
       <div className="lovanaris-step-indicator">
         <div className={`lovanaris-step ${step >= 1 ? "active" : ""}`} />
         <div className={`lovanaris-step ${step >= 2 ? "active" : ""}`} />
@@ -123,110 +118,234 @@ export default function LovanarisSchreibenPage() {
         {step === 1 && (
           <motion.div
             key="step1"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             className="lovanaris-form-container"
           >
-            <div className="lovanaris-crisis-banner">
-              <ShieldAlert size={24} style={{ flexShrink: 0 }} />
-              <div>
-                <strong>WICHTIGER HINWEIS:</strong> Dies ist kein Krisendienst und keine Therapieplattform. 
-                Wenn du dich in einer akuten Gefahr befindest, kontaktiere sofort die 
-                <strong> Polizei (110)</strong> oder das <strong>Hilfetelefon (116 016)</strong>.
-              </div>
-            </div>
-
-            <h1 style={{ fontSize: "2rem", marginBottom: "1.5rem" }}>Schutz-Vereinbarung</h1>
-            <p style={{ color: "var(--lovanaris-text-muted)", marginBottom: "2rem" }}>
-              Bevor du deine Geschichte teilst, musst du die folgenden Rahmenbedingungen akzeptieren:
-            </p>
-
-            <div className="lovanaris-legal-block">
-              <h4>Rechtliches & Sicherheit</h4>
-              <ul style={{ paddingLeft: "1.25rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                <li>Teilnahme ist absolut freiwillig und jederzeit anonym.</li>
-                <li>Einverständnis mit der anonymisierten redaktionellen Veröffentlichung.</li>
-                <li>Wir übernehmen keine Haftung für die Wirkung der Einsendung oder Veröffentlichung.</li>
-              </ul>
-              <div style={{ marginTop: "1rem" }}>
-                <Link href="/regelwerk" style={{ color: "var(--lovanaris-primary)", textDecoration: "none", fontSize: "0.85rem", fontWeight: "600" }}>
-                  Vollständiges Regelwerk lesen →
-                </Link>
-              </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem", marginBottom: "3rem" }}>
-              {[
-                { id: "age", label: "Ich bestätige, dass ich mindestens 18 Jahre alt bin (oder die Zustimmung meiner Erziehungsberechtigten habe)." },
-                { id: "noEmergency", label: "Ich bestätige, dass ich mich aktuell nicht in einer akuten Notlage befinde." },
-                { id: "truth", label: "Ich bestätige, dass meine Erzählung der Wahrheit entspricht und keine böswilligen Falschbehauptungen enthält." },
-                { id: "redaction", label: "Ich stimme einer redaktionellen Bearbeitung (z.B. Anonymisierung von Namen/Orten) zu." },
-                { id: "legal", label: "Ich akzeptiere die rechtlichen Rahmenbedingungen und Haftungshinweise (kein Anspruch auf Therapie/Beweissicherung)." }
-              ].map((item) => (
-                <label 
-                  key={item.id}
-                  style={{ 
-                    display: "flex", 
-                    gap: "1.25rem", 
-                    cursor: "pointer", 
-                    padding: "1.25rem", 
-                    background: "rgba(255,255,255,0.02)", 
-                    border: "1px solid var(--lovanaris-border)",
-                    borderRadius: "16px",
-                    transition: "all 0.2s ease"
-                  }}
-                  className="lovanaris-checkbox-card"
-                >
-                  <input
-                    type="checkbox"
-                    checked={consents[item.id as keyof typeof consents]}
-                    onChange={(e) => setConsents({ ...consents, [item.id]: e.target.checked })}
-                    style={{ width: "20px", height: "20px", marginTop: "2px", accentColor: "var(--lovanaris-primary)" }}
-                  />
-                  <span style={{ fontSize: "0.95rem", lineHeight: "1.5" }}>{item.label}</span>
-                </label>
-              ))}
-            </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem", padding: "1.5rem", background: "rgba(59, 130, 246, 0.05)", borderRadius: "16px", marginBottom: "3rem", border: "1px solid rgba(59, 130, 246, 0.1)" }}>
-              <ShieldAlert size={24} color="var(--lovanaris-primary)" />
-              <p style={{ fontSize: "0.85rem", color: "var(--lovanaris-text-muted)", margin: 0 }}>
-                <strong>Hinweis:</strong> Dieses Formular ist kein Ersatz für den Notruf oder eine akute Krisenintervention.
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+                style={{
+                  width: "72px",
+                  height: "72px",
+                  borderRadius: "24px",
+                  background: "linear-gradient(135deg, var(--lovanaris-primary-soft) 0%, rgba(181, 99, 69, 0.2) 100%)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 1.5rem",
+                  border: "1px solid rgba(181, 99, 69, 0.2)"
+                }}
+              >
+                <BookOpen size={32} color="var(--lovanaris-primary)" />
+              </motion.div>
+              <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.75rem", color: "var(--lovanaris-text)" }}>
+                Deine Geschichte teilen
+              </h1>
+              <p style={{ color: "var(--lovanaris-text-muted)", fontSize: "1.05rem", maxWidth: "500px", margin: "0 auto", lineHeight: 1.6 }}>
+                Ein sicherer Raum für Erlebnisse, die erzählt werden müssen.
               </p>
             </div>
 
+            {/* Info Cards */}
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", 
+              gap: "1rem",
+              marginBottom: "2.5rem" 
+            }}>
+              <InfoCard 
+                icon={<EyeOff size={22} />}
+                title="Vollständig anonym"
+                description="Keine Namen, keine E-Mail, keine IP-Speicherung. Deine Identität bleibt geschützt."
+              />
+              <InfoCard 
+                icon={<Heart size={22} />}
+                title="Andere ermutigen"
+                description="Deine Geschichte kann anderen Betroffenen helfen, sich nicht allein zu fühlen."
+              />
+              <InfoCard 
+                icon={<Lock size={22} />}
+                title="Du behältst die Kontrolle"
+                description="Mit deinem persönlichen Lösch-Code kannst du deine Geschichte jederzeit entfernen lassen."
+              />
+            </div>
+
+            {/* Crisis Banner */}
+            <div className="lovanaris-crisis-banner" style={{ marginBottom: "2rem" }}>
+              <AlertTriangle size={24} style={{ flexShrink: 0, marginTop: "2px" }} />
+              <div>
+                <strong style={{ display: "block", marginBottom: "0.25rem" }}>Kein Krisendienst</strong>
+                <span style={{ opacity: 0.9 }}>
+                  Befindest du dich in akuter Gefahr? Kontaktiere sofort die 
+                  <strong> Polizei (110)</strong> oder das <strong>Hilfetelefon (116 016)</strong>.
+                </span>
+              </div>
+            </div>
+
+            {/* Anonymity Notice */}
+            <div style={{
+              background: "linear-gradient(135deg, rgba(181, 99, 69, 0.08) 0%, rgba(151, 79, 55, 0.05) 100%)",
+              border: "1px solid rgba(181, 99, 69, 0.2)",
+              borderRadius: "20px",
+              padding: "1.5rem",
+              marginBottom: "2rem"
+            }}>
+              <div style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
+                <div style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "12px",
+                  background: "rgba(181, 99, 69, 0.15)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexShrink: 0
+                }}>
+                  <ShieldCheck size={20} color="var(--lovanaris-primary)" />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: "1rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--lovanaris-text)" }}>
+                    Wie wir Anonymität gewährleisten
+                  </h3>
+                  <ul style={{ 
+                    fontSize: "0.9rem", 
+                    color: "var(--lovanaris-text-muted)", 
+                    lineHeight: 1.7,
+                    paddingLeft: "1.25rem",
+                    margin: 0
+                  }}>
+                    <li>Keine Account-Erstellung nötig</li>
+                    <li>Keine Speicherung von IP-Adressen oder Metadaten</li>
+                    <li>Redaktionelle Prüfung auf erkennbare Details vor Veröffentlichung</li>
+                    <li>Hosting auf deutschen Servern mit DSGVO-Compliance</li>
+                  </ul>
+                  <p style={{ 
+                    fontSize: "0.85rem", 
+                    color: "var(--lovanaris-text-muted)", 
+                    marginTop: "0.75rem",
+                    paddingTop: "0.75rem",
+                    borderTop: "1px solid rgba(181, 99, 69, 0.15)"
+                  }}>
+                    <strong style={{ color: "var(--lovanaris-accent)" }}>Wichtiger Hinweis:</strong> Wir setzen alles daran, deine Anonymität zu schützen. 
+                    Dennoch kann eine 100%ige Garantie in der digitalen Welt nie vollständig gegeben werden. 
+                    Bitte verzichte daher aus eigenem Schutz auf Klarnamen, Orte oder datierbare Ereignisse.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Consent Checkboxes */}
+            <div style={{ marginBottom: "2rem" }}>
+              <h3 style={{ 
+                fontSize: "0.875rem", 
+                fontWeight: 700, 
+                textTransform: "uppercase", 
+                letterSpacing: "0.05em",
+                color: "var(--lovanaris-text)",
+                marginBottom: "1rem"
+              }}>
+                Bitte bestätige vor dem Weitergehen:
+              </h3>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <ConsentCheckbox
+                  id="notEmergency"
+                  checked={consents.notEmergency}
+                  onChange={(checked) => setConsents({ ...consents, notEmergency: checked })}
+                  label="Ich befinde mich aktuell nicht in einer akuten Notlage."
+                  sublabel="Ich weiß, dass dies hier kein Krisendienst ist."
+                />
+                
+                <ConsentCheckbox
+                  id="age"
+                  checked={consents.age}
+                  onChange={(checked) => setConsents({ ...consents, age: checked })}
+                  label="Ich bin mindestens 18 Jahre alt."
+                  sublabel="Oder ich habe die Zustimmung meiner Erziehungsberechtigten."
+                />
+                
+                <ConsentCheckbox
+                  id="anonymized"
+                  checked={consents.anonymized}
+                  onChange={(checked) => setConsents({ ...consents, anonymized: checked })}
+                  label="Ich werde keine Klarnamen, Orte oder erkennbare Details nennen."
+                  sublabel="Zum Schutz aller Beteiligten und meiner eigenen Anonymität."
+                />
+                
+                <ConsentCheckbox
+                  id="understood"
+                  checked={consents.understood}
+                  onChange={(checked) => setConsents({ ...consents, understood: checked })}
+                  label="Ich verstehe, dass meine Geschichte redaktionell geprüft wird."
+                  sublabel="Das schützt dich und andere. Eine Veröffentlichung ist nicht garantiert."
+                />
+              </div>
+            </div>
+
+            {/* Continue Button */}
             <button
-              onClick={() => setStep(2)}
-              disabled={!consents.age || !consents.noEmergency || !consents.truth || !consents.redaction || !consents.legal}
+              onClick={validateStep1}
+              disabled={!allConsentsGiven}
               className="btn-lovanaris btn-lovanaris-primary"
-              style={{ width: "100%", opacity: (!consents.age || !consents.noEmergency || !consents.truth || !consents.redaction || !consents.legal) ? 0.5 : 1 }}
+              style={{ 
+                width: "100%", 
+                padding: "1.1rem",
+                fontSize: "1rem",
+                opacity: allConsentsGiven ? 1 : 0.5,
+                cursor: allConsentsGiven ? "pointer" : "not-allowed"
+              }}
             >
-              Weiter zur Geschichte <ArrowRight size={18} />
+              Weiter zum Schreiben <ArrowRight size={18} />
             </button>
+
+            <p style={{ 
+              textAlign: "center", 
+              fontSize: "0.8rem", 
+              color: "var(--lovanaris-text-muted)", 
+              marginTop: "1.5rem" 
+            }}>
+              Mit dem Weitergehen akzeptierst du unsere{" "}
+              <Link href="/regelwerk" style={{ color: "var(--lovanaris-primary)", textDecoration: "underline" }}>
+                Nutzungsbedingungen
+              </Link>
+            </p>
           </motion.div>
         )}
 
         {step === 2 && !submitted && (
           <motion.div
             key="step2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
             className="lovanaris-form-container"
           >
-            <h1 style={{ fontSize: "2rem", marginBottom: "1.5rem" }}>Deine Geschichte</h1>
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+              <h1 style={{ fontSize: "1.75rem", fontWeight: 700, marginBottom: "0.5rem" }}>
+                Deine Geschichte
+              </h1>
+              <p style={{ color: "var(--lovanaris-text-muted)" }}>
+                Nimm dir Zeit. Es ist okay, wenn es schwer fällt.
+              </p>
+            </div>
             
             <form onSubmit={handleSubmit}>
               <input type="text" className="hp-field" value={hpValue} onChange={(e) => setHpValue(e.target.value)} tabIndex={-1} autoComplete="off" />
 
-              <div style={{ marginBottom: "2rem", position: "relative" }} ref={selectRef}>
-                <label className="lovanaris-label">Trigger-Kategorie</label>
+              {/* Category Select */}
+              <div style={{ marginBottom: "1.5rem", position: "relative" }} ref={selectRef}>
+                <label className="lovanaris-label">Themenbereich</label>
                 <div 
                   className="lovanaris-textarea" 
                   style={{ 
                     minHeight: "auto", 
-                    padding: "1rem 1.5rem", 
+                    padding: "1rem 1.25rem", 
                     cursor: "pointer", 
                     display: "flex", 
                     justifyContent: "space-between", 
@@ -236,7 +355,7 @@ export default function LovanarisSchreibenPage() {
                   onClick={() => setIsSelectOpen(!isSelectOpen)}
                 >
                   <span style={{ color: triggerCategory ? "var(--lovanaris-text)" : "var(--lovanaris-text-muted)" }}>
-                    {triggerCategory || "Bitte wählen..."}
+                    {triggerCategory || "Wähle einen passenden Bereich..."}
                   </span>
                   <motion.div animate={{ rotate: isSelectOpen ? 180 : 0 }}>
                     <ChevronDown size={20} />
@@ -258,9 +377,10 @@ export default function LovanarisSchreibenPage() {
                         background: "var(--lovanaris-surface)",
                         border: "1px solid var(--lovanaris-border)",
                         borderRadius: "16px",
-                        boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+                        boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
                         overflow: "hidden",
-                        padding: "0.5rem"
+                        padding: "0.5rem",
+                        marginTop: "0.5rem"
                       }}
                     >
                       {triggerCategories.map(cat => (
@@ -280,7 +400,7 @@ export default function LovanarisSchreibenPage() {
                             setIsSelectOpen(false);
                           }}
                           onMouseEnter={(e) => {
-                            if (triggerCategory !== cat) e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                            if (triggerCategory !== cat) e.currentTarget.style.background = "rgba(85, 73, 61, 0.05)";
                           }}
                           onMouseLeave={(e) => {
                             if (triggerCategory !== cat) e.currentTarget.style.background = "transparent";
@@ -294,41 +414,59 @@ export default function LovanarisSchreibenPage() {
                 </AnimatePresence>
               </div>
 
-              <div style={{ marginBottom: "2rem" }}>
-                <label className="lovanaris-label">Sicherer Schreibbereich</label>
+              {/* Story Textarea */}
+              <div style={{ marginBottom: "1.5rem" }}>
+                <label className="lovanaris-label">Deine Erzählung</label>
                 <textarea
                   className="lovanaris-textarea"
-                  placeholder="Erzähle hier deine Geschichte... (Keine Klarnamen/Orte!)"
+                  placeholder="Hier ist dein sicherer Raum...&#10;&#10;Erzähle, was du erlebt hast. Wie hat es sich angefühlt? Was möchtest du anderen mitgeben?&#10;&#10;Denke daran: Keine Klarnamen, keine spezifischen Orte, keine datierbaren Details."
                   value={story}
                   onChange={(e) => setStory(e.target.value)}
                   required
+                  style={{ minHeight: "320px" }}
                 />
+                <div style={{ 
+                  display: "flex", 
+                  justifyContent: "space-between", 
+                  alignItems: "center",
+                  marginTop: "0.75rem",
+                  fontSize: "0.8rem",
+                  color: "var(--lovanaris-text-muted)"
+                }}>
+                  <span>{story.length} Zeichen {story.length < 100 && `(min. 100)`}</span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <EyeOff size={14} />
+                    Wird anonym gespeichert
+                  </span>
+                </div>
               </div>
 
-              <div className="lovanaris-checkbox-group">
-                <label className="lovanaris-checkbox-item">
-                  <input type="checkbox" checked={consents.anonymity} onChange={(e) => setConsents({...consents, anonymity: e.target.checked})} />
-                  <span>Ich habe keine Namen, Orte oder erkennbare Details genannt.</span>
-                </label>
-                <label className="lovanaris-checkbox-item">
-                  <input type="checkbox" checked={consents.truth} onChange={(e) => setConsents({...consents, truth: e.target.checked})} />
-                  <span>Ich versichere die Wahrheit der Geschichte nach bestem Wissen.</span>
-                </label>
-                <label className="lovanaris-checkbox-item">
-                  <input type="checkbox" checked={consents.redaction} onChange={(e) => setConsents({...consents, redaction: e.target.checked})} />
-                  <span>Ich stimme der redaktionellen Bearbeitung zur Anonymisierung zu.</span>
-                </label>
-                <label className="lovanaris-checkbox-item">
-                  <input type="checkbox" checked={consents.noGuarantee} onChange={(e) => setConsents({...consents, noGuarantee: e.target.checked})} />
-                  <span>Mir ist bewusst, dass es keine Garantie auf Veröffentlichung gibt.</span>
-                </label>
-              </div>
-
+              {/* Submit Buttons */}
               <div style={{ display: "flex", gap: "1rem" }}>
-                <button type="button" onClick={() => setStep(1)} className="btn-lovanaris btn-lovanaris-outline">Zurück</button>
-                <button type="submit" disabled={loading} className="btn-lovanaris btn-lovanaris-primary" style={{ flexGrow: 1, opacity: loading ? 0.7 : 1, cursor: loading ? "not-allowed" : "pointer" }}>
-                  {loading ? <Loader2 className="animate-spin" /> : <ShieldCheck size={20} />}
-                  {loading ? "Wird gesendet..." : "Final & Anonym absenden"}
+                <button 
+                  type="button" 
+                  onClick={() => setStep(1)} 
+                  className="btn-lovanaris btn-lovanaris-outline"
+                  style={{ padding: "1rem 1.5rem" }}
+                >
+                  Zurück
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={loading || story.length < 100 || !triggerCategory} 
+                  className="btn-lovanaris btn-lovanaris-primary" 
+                  style={{ 
+                    flexGrow: 1, 
+                    padding: "1rem",
+                    opacity: (loading || story.length < 100 || !triggerCategory) ? 0.5 : 1,
+                    cursor: (loading || story.length < 100 || !triggerCategory) ? "not-allowed" : "pointer"
+                  }}
+                >
+                  {loading ? (
+                    <><Loader2 className="animate-spin" size={20} /> Wird gesendet...</>
+                  ) : (
+                    <><Send size={18} /> Geschichte anonym einreichen</>
+                  )}
                 </button>
               </div>
             </form>
@@ -338,142 +476,181 @@ export default function LovanarisSchreibenPage() {
         {step === 3 && submitted && (
           <motion.div
             key="step3"
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="lovanaris-form-container"
-            style={{ textAlign: "center", overflow: "hidden" }}
+            style={{ textAlign: "center" }}
           >
             <motion.div 
-              initial={{ y: 20, opacity: 0 }} 
-              animate={{ y: 0, opacity: 1 }} 
-              transition={{ delay: 0.2 }}
-              style={{ display: "flex", justifyContent: "center", marginBottom: "2rem" }}
+              initial={{ scale: 0.5, opacity: 0 }} 
+              animate={{ scale: 1, opacity: 1 }} 
+              transition={{ delay: 0.1, type: "spring", stiffness: 150 }}
+              style={{ 
+                width: "80px",
+                height: "80px",
+                borderRadius: "28px",
+                background: "linear-gradient(135deg, #16a34a 0%, #22c55e 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 1.5rem",
+                boxShadow: "0 20px 40px rgba(22, 163, 74, 0.3)"
+              }}
             >
-              <div style={{ padding: "1.5rem", background: "rgba(22, 163, 74, 0.1)", borderRadius: "100px", border: "1px solid rgba(22, 163, 74, 0.2)" }}>
-                <CheckCircle size={48} color="#16a34a" />
-              </div>
+              <CheckCircle size={40} color="white" />
             </motion.div>
 
             <motion.h1 
               initial={{ y: 20, opacity: 0 }} 
               animate={{ y: 0, opacity: 1 }} 
-              transition={{ delay: 0.3 }}
-              style={{ fontSize: "2.5rem", marginBottom: "0.5rem" }}
+              transition={{ delay: 0.2 }}
+              style={{ fontSize: "2rem", marginBottom: "0.5rem", color: "var(--lovanaris-text)" }}
             >
-              Geschichte gesichert.
+              Danke für dein Vertrauen
             </motion.h1>
+            
             <motion.p 
               initial={{ y: 20, opacity: 0 }} 
               animate={{ y: 0, opacity: 1 }} 
-              transition={{ delay: 0.4 }}
-              style={{ color: "var(--lovanaris-text-muted)", marginBottom: "3rem" }}
+              transition={{ delay: 0.3 }}
+              style={{ color: "var(--lovanaris-text-muted)", marginBottom: "2.5rem", maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
             >
-              Deine Stimme wurde anonym im System hinterlegt.
+              Deine Geschichte wurde sicher und anonym gespeichert. Sie wird nun redaktionell geprüft.
             </motion.p>
 
+            {/* Codes Container */}
             <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }} 
-              animate={{ scale: 1, opacity: 1 }} 
-              transition={{ delay: 0.6, type: "spring", stiffness: 100 }}
+              initial={{ y: 30, opacity: 0 }} 
+              animate={{ y: 0, opacity: 1 }} 
+              transition={{ delay: 0.4 }}
               style={{
-                background: "var(--lovanaris-surface)",
+                background: "var(--lovanaris-bg)",
                 border: "2px dashed var(--lovanaris-border)",
-                padding: "3rem 2rem",
                 borderRadius: "24px",
-                position: "relative",
-                marginBottom: "3rem"
+                padding: "2rem",
+                marginBottom: "2rem"
               }}
             >
-              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "2rem" }}>
-                <div>
-                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--lovanaris-primary)", fontWeight: "700", marginBottom: "1rem" }}>
-                    Öffentlicher Zugangs-Code
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "3.5rem",
-                      fontFamily: "monospace",
-                      letterSpacing: "0.3em",
-                      color: "var(--lovanaris-text)",
-                    }}
-                  >
-                    {code}
-                  </div>
-                  <p style={{ fontSize: "0.8rem", color: "var(--lovanaris-text-muted)", marginTop: "10px" }}>Wird benötigt, um den Status deiner Geschichte zu prüfen.</p>
+              <div style={{ marginBottom: "2rem" }}>
+                <div style={{ 
+                  fontSize: "0.75rem", 
+                  textTransform: "uppercase", 
+                  letterSpacing: "0.15em", 
+                  color: "var(--lovanaris-primary)", 
+                  fontWeight: 700, 
+                  marginBottom: "0.75rem" 
+                }}>
+                  Öffentlicher Zugangs-Code
                 </div>
-
-                <div style={{ padding: "2rem", background: "rgba(220, 38, 38, 0.05)", borderRadius: "16px", border: "1px solid rgba(220, 38, 38, 0.2)" }}>
-                  <div style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.2em", color: "#dc2626", fontWeight: "700", marginBottom: "1rem", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                    <ShieldCheck size={16} /> Geheimer Lösch-Key
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.5rem",
-                      fontFamily: "monospace",
-                      letterSpacing: "0.2em",
-                      color: "var(--lovanaris-text)",
-                      background: "var(--lovanaris-bg)",
-                      padding: "1rem",
-                      borderRadius: "8px",
-                      border: "1px solid var(--lovanaris-border)"
-                    }}
-                  >
-                    {securityToken}
-                  </div>
-                  <p style={{ fontSize: "0.8rem", color: "var(--lovanaris-text-muted)", marginTop: "10px" }}><strong style={{ color: "var(--lovanaris-text)" }}>Diesen Key niemals teilen!</strong> Nur hiermit kannst du später eine Löschung beantragen.</p>
+                <div style={{
+                  fontSize: "2.5rem",
+                  fontFamily: "monospace",
+                  letterSpacing: "0.2em",
+                  color: "var(--lovanaris-text)",
+                  fontWeight: 600
+                }}>
+                  {code}
                 </div>
+                <p style={{ fontSize: "0.85rem", color: "var(--lovanaris-text-muted)", marginTop: "0.5rem" }}>
+                  Damit kannst du den Status deiner Geschichte prüfen
+                </p>
               </div>
 
-              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", marginTop: "2rem" }}>
+              <div style={{ 
+                padding: "1.5rem", 
+                background: "rgba(220, 38, 38, 0.05)", 
+                borderRadius: "16px", 
+                border: "1px solid rgba(220, 38, 38, 0.15)"
+              }}>
+                <div style={{ 
+                  fontSize: "0.75rem", 
+                  textTransform: "uppercase", 
+                  letterSpacing: "0.15em", 
+                  color: "#dc2626", 
+                  fontWeight: 700, 
+                  marginBottom: "0.75rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem"
+                }}>
+                  <Lock size={14} /> Geheimer Lösch-Key
+                </div>
+                <div style={{
+                  fontSize: "1.25rem",
+                  fontFamily: "monospace",
+                  letterSpacing: "0.1em",
+                  color: "var(--lovanaris-text)",
+                  background: "white",
+                  padding: "0.75rem 1rem",
+                  borderRadius: "10px",
+                  border: "1px solid var(--lovanaris-border)",
+                  wordBreak: "break-all"
+                }}>
+                  {securityToken}
+                </div>
+                <p style={{ fontSize: "0.8rem", color: "#dc2626", marginTop: "0.75rem", fontWeight: 500 }}>
+                  Diesen Key niemals teilen! Nur damit kannst du deine Geschichte löschen lassen.
+                </p>
+              </div>
+
+              {/* Copy Buttons */}
+              <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", marginTop: "1.5rem" }}>
                 <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(code);
-                    setShowCopyToast(true);
-                    setTimeout(() => setShowCopyToast(false), 3000);
-                  }} 
-                  className="btn-lovanaris btn-lovanaris-outline" 
+                  onClick={() => copyToClipboard(code)} 
+                  className="btn-lovanaris btn-lovanaris-outline"
+                  style={{ fontSize: "0.875rem", padding: "0.75rem 1.25rem" }}
                 >
-                  <Copy size={18} /> Code kopieren
+                  <Copy size={16} /> Code kopieren
                 </button>
                 <button 
-                  onClick={() => {
-                    navigator.clipboard.writeText(securityToken);
-                    setShowCopyToast(true);
-                    setTimeout(() => setShowCopyToast(false), 3000);
-                  }} 
+                  onClick={() => copyToClipboard(securityToken)} 
                   className="btn-lovanaris btn-lovanaris-outline"
+                  style={{ fontSize: "0.875rem", padding: "0.75rem 1.25rem" }}
                 >
-                  <ShieldCheck size={18} /> Key kopieren
+                  <Lock size={16} /> Key kopieren
                 </button>
               </div>
             </motion.div>
 
+            {/* Important Notice */}
             <motion.div 
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
-              transition={{ delay: 0.8 }}
-              className="lovanaris-crisis-banner" 
-              style={{ background: "rgba(217, 119, 6, 0.1)", borderColor: "rgba(217, 119, 6, 0.3)", color: "#d97706", textAlign: "left" }}
+              transition={{ delay: 0.6 }}
+              style={{
+                background: "rgba(217, 119, 6, 0.08)",
+                border: "1px solid rgba(217, 119, 6, 0.2)",
+                borderRadius: "16px",
+                padding: "1.25rem",
+                display: "flex",
+                gap: "1rem",
+                alignItems: "flex-start",
+                textAlign: "left",
+                marginBottom: "1.5rem"
+              }}
             >
-              <ShieldAlert size={24} style={{ flexShrink: 0 }} />
-              <div>
-                <strong>DIESEN CODE SICHER AUFBEWAHREN!</strong> Ohne diesen Code hast du keinen Zugriff mehr auf deine Geschichte und wir können sie nicht manuell für dich finden oder löschen.
+              <AlertTriangle size={22} color="#d97706" style={{ flexShrink: 0, marginTop: "2px" }} />
+              <div style={{ fontSize: "0.9rem", color: "var(--lovanaris-text)", lineHeight: 1.6 }}>
+                <strong>Bitte bewahre beide Codes sicher auf.</strong> Ohne sie kannst du weder den Status prüfen noch eine Löschung beantragen. 
+                Wir können verlorene Codes nicht wiederherstellen.
               </div>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0 }} 
               animate={{ opacity: 1 }} 
-              transition={{ delay: 1 }}
+              transition={{ delay: 0.7 }}
             >
-              <Link href="/" className="btn-lovanaris btn-lovanaris-primary" style={{ marginTop: "2rem", width: "100%" }}>
-                Zurück zur Übersicht
+              <Link href="/" className="btn-lovanaris btn-lovanaris-primary" style={{ width: "100%" }}>
+                Zurück zur Startseite
               </Link>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Copy Toast */}
       <AnimatePresence>
         {showCopyToast && (
           <motion.div
@@ -485,24 +662,126 @@ export default function LovanarisSchreibenPage() {
               bottom: "2rem",
               left: "50%",
               transform: "translateX(-50%)",
-              background: "rgba(17, 20, 26, 0.95)",
-              border: "1px solid var(--lovanaris-primary)",
+              background: "var(--lovanaris-text)",
+              color: "white",
               padding: "1rem 2rem",
               borderRadius: "100px",
               display: "flex",
               alignItems: "center",
               gap: "0.75rem",
-              boxShadow: "0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(59, 130, 246, 0.2)",
+              boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
               zIndex: 1000,
-              color: "white",
-              fontWeight: "600"
+              fontWeight: 600,
+              fontSize: "0.9rem"
             }}
           >
-            <CheckCircle size={18} color="var(--lovanaris-primary)" />
-              Code in Zwischenablage kopiert
+            <CheckCircle size={18} color="#22c55e" />
+            In Zwischenablage kopiert
           </motion.div>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+// Helper Components
+function InfoCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+  return (
+    <div style={{
+      background: "white",
+      border: "1px solid var(--lovanaris-border)",
+      borderRadius: "16px",
+      padding: "1.25rem",
+      transition: "all 0.2s ease"
+    }}>
+      <div style={{
+        width: "40px",
+        height: "40px",
+        borderRadius: "12px",
+        background: "var(--lovanaris-primary-soft)",
+        color: "var(--lovanaris-primary)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: "0.875rem"
+      }}>
+        {icon}
+      </div>
+      <h3 style={{ fontSize: "0.95rem", fontWeight: 600, marginBottom: "0.375rem", color: "var(--lovanaris-text)" }}>
+        {title}
+      </h3>
+      <p style={{ fontSize: "0.85rem", color: "var(--lovanaris-text-muted)", lineHeight: 1.5, margin: 0 }}>
+        {description}
+      </p>
+    </div>
+  );
+}
+
+function ConsentCheckbox({ 
+  id, 
+  checked, 
+  onChange, 
+  label, 
+  sublabel 
+}: { 
+  id: string; 
+  checked: boolean; 
+  onChange: (checked: boolean) => void; 
+  label: string;
+  sublabel: string;
+}) {
+  return (
+    <label 
+      style={{ 
+        display: "flex", 
+        gap: "1rem", 
+        cursor: "pointer", 
+        padding: "1.25rem", 
+        background: checked ? "rgba(181, 99, 69, 0.06)" : "white", 
+        border: `2px solid ${checked ? "var(--lovanaris-primary)" : "var(--lovanaris-border)"}`,
+        borderRadius: "16px",
+        transition: "all 0.2s ease"
+      }}
+    >
+      <div style={{
+        width: "22px",
+        height: "22px",
+        borderRadius: "6px",
+        border: `2px solid ${checked ? "var(--lovanaris-primary)" : "var(--lovanaris-border)"}`,
+        background: checked ? "var(--lovanaris-primary)" : "transparent",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+        marginTop: "2px",
+        transition: "all 0.2s ease"
+      }}>
+        {checked && <FileCheck size={14} color="white" />}
+      </div>
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        style={{ position: "absolute", opacity: 0, pointerEvents: "none" }}
+      />
+      <div>
+        <span style={{ 
+          fontSize: "0.95rem", 
+          fontWeight: 500, 
+          color: "var(--lovanaris-text)",
+          display: "block",
+          marginBottom: "0.25rem"
+        }}>
+          {label}
+        </span>
+        <span style={{ 
+          fontSize: "0.85rem", 
+          color: "var(--lovanaris-text-muted)",
+          display: "block"
+        }}>
+          {sublabel}
+        </span>
+      </div>
+    </label>
   );
 }
