@@ -15,7 +15,7 @@ export default function LovanarisRegelwerkPage() {
         "Mit der Einsendung bestätigst du dein Einverständnis mit der anonymisierten redaktionellen Veröffentlichung deiner Geschichte im Rahmen der Projekt-Richtlinien.",
         "Du stimmst zu, dass deine Geschichte redaktionell bearbeitet werden darf (z.B. Kürzung, Änderung von Details wie Namen, Orten oder Berufen zum Schutz deiner Anonymität).",
         "Es besteht kein Anspruch auf Veröffentlichung deiner Einsendung. Wir behalten uns vor, Einsendungen bei Verdacht auf Missbrauch oder fehlende Plausibilität auszuschließen.",
-        "Du kannst deine Einwilligung jederzeit widerrufen, sofern du deinen Identifikations-Code noch besitzt. Ohne Code ist eine Zuordnung und damit eine Löschung unmöglich."
+        "Du kannst deine Einwilligung jederzeit widerrufen. Dafür benötigst du deinen 6-stelligen Status-Code und den 12-stelligen Löschcode, die du nach dem Absenden erhältst. Ohne beide Codes ist eine Zuordnung und damit eine Löschung systembedingt unmöglich."
       ]
     },
     {

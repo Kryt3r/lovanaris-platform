@@ -124,7 +124,7 @@ export default function LovanarisPage() {
             </div>
             <h3 className="lovanaris-card-title">Anonymität & Code</h3>
             <p className="lovanaris-card-text">
-              Keine Namen, keine Orte. Jede Einsendung erhält einen eindeutigen Code (z.B. „A7B3“). Nur du weißt, dass es deine Geschichte ist.
+              Keine Namen, keine Orte. Jede Einsendung erhält einen eindeutigen 6-stelligen Code (z.B. „A7B3X9") und einen persönlichen Löschcode. Nur du weißt, dass es deine Geschichte ist.
             </p>
           </motion.div>
 

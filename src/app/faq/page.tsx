@@ -18,7 +18,7 @@ const faqData = [
   },
   {
     question: "Kann ich meine Geschichte wieder löschen lassen?",
-    answer: "Ja, jederzeit. Gehe dazu auf den Bereich 'Status', gib deinen Code ein und nutze die dortige Option zur Löschung. Bitte beachte: Ohne deinen Code können wir deine Geschichte systembedingt nicht finden oder löschen, da wir keine anderen Identifikationsmerkmale speichern.",
+    answer: "Ja, jederzeit. Nach dem Absenden erhältst du zwei Codes: Einen 6-stelligen Code zum Status-Check und einen 12-stelligen alphanumerischen Löschcode. Für eine Löschung benötigst du beide Codes. Ohne diese ist eine Zuordnung systembedingt unmöglich, da wir keine anderen Daten speichern.",
     icon: <Trash2 size={20} />
   },
   {

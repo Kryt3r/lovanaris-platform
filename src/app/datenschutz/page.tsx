@@ -24,7 +24,7 @@ export default function LovanarisDatenschutzPage() {
     {
       title: "Löschung & Widerruf",
       icon: <Trash2 size={24} />,
-      content: "Löschungen sind jederzeit möglich, sofern du deinen 6-stelligen Identifikations-Code besitzt. Ohne diesen Code ist eine Zuordnung deiner Daten systembedingt unmöglich, da wir keine Metadaten speichern."
+      content: "Löschungen sind jederzeit möglich mit deinem persönlichen Löschcode – einem 12-stelligen alphanumerischen Code, den du nach dem Absenden erhältst. Ohne diesen Code ist eine Zuordnung deiner Daten systembedingt unmöglich, da wir keine Metadaten speichern."
     },
     {
       title: "Schutz vor Missbrauch",
